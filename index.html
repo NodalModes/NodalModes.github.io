@@ -1,14 +1,20 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 
 <head>
-    <title>NodalModes' Page</title>
+	<meta charset="UTF-8">
+	<title>NodalModes' Personal Page</title>
 </head>
 
 <body>
-    <div>
-        <h1>Hello</h1>
-    </div>
+
+	<div id="app"></div>
+	<script src="./index.js"></script>
+	<script>
+		var app = Elm.Main.init({
+			node: document.getElementById("app")
+		});
+	</script>
 </body>
 
 </html>
