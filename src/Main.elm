@@ -15,8 +15,6 @@ main =
         [ Font.family [ Font.monospace ]
         , Font.color textColor
         , Background.color bgColor
-
-        -- , Border.width 10
         ]
         view
 
@@ -42,8 +40,6 @@ header =
         [ width fill
         , padding 10
 
-        -- , Border.width 10
-        -- , Border.color (rgb 0 0 0)
         -- , explain Debug.todo
         , mouseOver [ Background.color lightGrey ]
         ]
@@ -77,7 +73,18 @@ content =
         , mouseOver [ Background.color lightGrey ]
         ]
     <|
-        el [ centerX, centerY ] (text "Content")
+        el [ centerX, centerY ] (text contentText)
+
+
+contentText : String
+contentText =
+    """
+Howdy!
+
+I am Ryan Ellis. 
+(Not the hockey player.) 
+(Not the racecar driver.)
+"""
 
 
 footer : Element msg
@@ -86,12 +93,14 @@ footer =
         [ mouseOver [ Background.color lightGrey ]
         , Region.footer
         , padding 10
+        , width fill
 
         -- , explain Debug.todo
-        , width fill
         ]
     <|
         [ el linkAttributes <|
+            text "ellisryanjames@gmail.com"
+        , el linkAttributes <|
             newTabLink []
                 { url = "https://github.com/NodalModes"
                 , label = text "GitHub"

@@ -10814,6 +10814,10 @@ var $author$project$Main$footer = A2(
 			A2(
 			$mdgriffith$elm_ui$Element$el,
 			$author$project$Main$linkAttributes,
+			$mdgriffith$elm_ui$Element$text('ellisryanjames@gmail.com')),
+			A2(
+			$mdgriffith$elm_ui$Element$el,
+			$author$project$Main$linkAttributes,
 			A2(
 				$mdgriffith$elm_ui$Element$newTabLink,
 				_List_Nil,
@@ -10877,6 +10881,7 @@ var $author$project$Main$header = A2(
 				]),
 			$mdgriffith$elm_ui$Element$text('{- NodalModes -}'))
 		]));
+var $author$project$Main$contentText = '\r\nHowdy!\r\n\r\nI am Ryan Ellis. \r\n(Not the hockey player.) \r\n(Not the racecar driver.)\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
 var $author$project$Main$content = A2(
@@ -10895,7 +10900,7 @@ var $author$project$Main$content = A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
-		$mdgriffith$elm_ui$Element$text('Content')));
+		$mdgriffith$elm_ui$Element$text($author$project$Main$contentText)));
 var $author$project$Main$middle = A2(
 	$mdgriffith$elm_ui$Element$row,
 	_List_fromArray(
