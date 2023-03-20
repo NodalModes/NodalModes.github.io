@@ -9,11 +9,12 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Region as Region
 import Html exposing (footer, header)
+import Json.Decode as Decode
 
 
 main : Program Flags Model Msg
 main =
-    Browser.element
+    element
         { init = init
         , view = view
         , update = update
@@ -46,11 +47,14 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    Events.onResize (\width height -> Resized width height)
+    Sub.batch
+        [ Events.onResize (\width height -> Resized width height)
+        ]
 
 
 type alias Model =
-    { device : Device }
+    { device : Device
+    }
 
 
 type alias Flags =
@@ -74,14 +78,14 @@ view model =
             , height fill
             , spacing 10
             ]
-            [ header model
+            [ header
             , middle
             , footer model
             ]
 
 
-header : Model -> Element msg
-header model =
+header : Element msg
+header =
     row
         [ width fill
         , padding 10
@@ -104,6 +108,7 @@ middle =
     row
         [ width fill
         , height fill
+        , padding 10
         , mouseOver [ Background.color lightGrey ]
 
         -- , explain Debug.todo
@@ -124,8 +129,7 @@ content =
 
 contentText : String
 contentText =
-    """
-Howdy!
+    """Howdy!
 
 I am Ryan Ellis. 
 (Not the hockey player.) 
@@ -184,13 +188,13 @@ footer model =
         in
         case situation of
             ( Phone, _ ) ->
-                column [ width fill ] (footerContent ++ [ text "Phone" ])
+                column [ width fill ] footerContent
 
             ( _, Landscape ) ->
-                row [ width fill ] (footerContent ++ [ text "_Landscape" ])
+                row [ width fill ] footerContent
 
             ( _, Portrait ) ->
-                column [ width fill ] (footerContent ++ [ text "_Portrait" ])
+                column [ width fill ] footerContent
 
 
 linkAttributes : List (Attribute msg)

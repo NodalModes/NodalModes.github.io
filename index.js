@@ -5237,6 +5237,7 @@ var $author$project$Main$Resized = F2(
 	function (a, b) {
 		return {$: 'Resized', a: a, b: b};
 	});
+var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$browser$Browser$Events$Window = {$: 'Window'};
 var $elm$browser$Browser$Events$MySub = F3(
 	function (a, b, c) {
@@ -5652,11 +5653,15 @@ var $elm$browser$Browser$Events$onResize = function (func) {
 				A2($elm$json$Json$Decode$field, 'innerHeight', $elm$json$Json$Decode$int))));
 };
 var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$browser$Browser$Events$onResize(
-		F2(
-			function (width, height) {
-				return A2($author$project$Main$Resized, width, height);
-			}));
+	return $elm$core$Platform$Sub$batch(
+		_List_fromArray(
+			[
+				$elm$browser$Browser$Events$onResize(
+				F2(
+					function (width, height) {
+						return A2($author$project$Main$Resized, width, height);
+					}))
+			]));
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -11659,12 +11664,7 @@ var $author$project$Main$footer = function (model) {
 								[
 									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 								]),
-							_Utils_ap(
-								$author$project$Main$footerContent,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$text('_Landscape')
-									])));
+							$author$project$Main$footerContent);
 					}
 				} else {
 					if (situation.a.$ === 'Phone') {
@@ -11677,12 +11677,7 @@ var $author$project$Main$footer = function (model) {
 								[
 									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 								]),
-							_Utils_ap(
-								$author$project$Main$footerContent,
-								_List_fromArray(
-									[
-										$mdgriffith$elm_ui$Element$text('_Portrait')
-									])));
+							$author$project$Main$footerContent);
 					}
 				}
 			}
@@ -11693,12 +11688,7 @@ var $author$project$Main$footer = function (model) {
 					[
 						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 					]),
-				_Utils_ap(
-					$author$project$Main$footerContent,
-					_List_fromArray(
-						[
-							$mdgriffith$elm_ui$Element$text('Phone')
-						])));
+				$author$project$Main$footerContent);
 		}());
 };
 var $mdgriffith$elm_ui$Internal$Model$Heading = function (a) {
@@ -11715,33 +11705,31 @@ var $mdgriffith$elm_ui$Element$Font$size = function (i) {
 		$mdgriffith$elm_ui$Internal$Flag$fontSize,
 		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
 };
-var $author$project$Main$header = function (model) {
-	return A2(
-		$mdgriffith$elm_ui$Element$row,
-		_List_fromArray(
-			[
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$padding(10),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
-					]))
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$mdgriffith$elm_ui$Element$el,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$centerX,
-						$mdgriffith$elm_ui$Element$centerY,
-						$mdgriffith$elm_ui$Element$Font$size(32),
-						$mdgriffith$elm_ui$Element$Region$heading(1)
-					]),
-				$mdgriffith$elm_ui$Element$text('{- NodalModes -}'))
-			]));
-};
+var $author$project$Main$header = A2(
+	$mdgriffith$elm_ui$Element$row,
+	_List_fromArray(
+		[
+			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+			$mdgriffith$elm_ui$Element$padding(10),
+			$mdgriffith$elm_ui$Element$mouseOver(
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
+				]))
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$mdgriffith$elm_ui$Element$el,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$centerY,
+					$mdgriffith$elm_ui$Element$Font$size(32),
+					$mdgriffith$elm_ui$Element$Region$heading(1)
+				]),
+			$mdgriffith$elm_ui$Element$text('{- NodalModes -}'))
+		]));
 var $mdgriffith$elm_ui$Internal$Model$OnlyDynamic = F2(
 	function (a, b) {
 		return {$: 'OnlyDynamic', a: a, b: b};
@@ -11950,7 +11938,7 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 	});
 var $mdgriffith$elm_ui$Element$layout = $mdgriffith$elm_ui$Element$layoutWith(
 	{options: _List_Nil});
-var $author$project$Main$contentText = '\r\nHowdy!\r\n\r\nI am Ryan Ellis. \r\n(Not the hockey player.) \r\n(Not the racecar driver.)\r\n';
+var $author$project$Main$contentText = 'Howdy!\r\n\r\nI am Ryan Ellis. \r\n(Not the hockey player.) \r\n(Not the racecar driver.)\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
 var $author$project$Main$content = A2(
@@ -11976,6 +11964,7 @@ var $author$project$Main$middle = A2(
 		[
 			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 			$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+			$mdgriffith$elm_ui$Element$padding(10),
 			$mdgriffith$elm_ui$Element$mouseOver(
 			_List_fromArray(
 				[
@@ -12045,7 +12034,7 @@ var $author$project$Main$view = function (model) {
 				]),
 			_List_fromArray(
 				[
-					$author$project$Main$header(model),
+					$author$project$Main$header,
 					$author$project$Main$middle,
 					$author$project$Main$footer(model)
 				])));
