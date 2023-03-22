@@ -10,6 +10,7 @@ import Element.Font as Font
 import Element.Region as Region
 import Html exposing (footer, header)
 import Json.Decode as Decode
+import Simple.Transition as Transition exposing (properties)
 
 
 main : Program Flags Model Msg
@@ -65,7 +66,11 @@ type alias Flags =
 
 view : Model -> Html.Html msg
 view model =
-    layout
+    layoutWith
+        { options =
+            [-- forceHover
+            ]
+        }
         [ Font.family [ Font.monospace ]
         , Font.color textColor
         , Background.color bgColor
@@ -91,7 +96,9 @@ header =
         , padding 10
 
         -- , explain Debug.todo
+        , Background.color white
         , mouseOver [ Background.color lightGrey ]
+        , backgroundFadeTransition
         ]
         [ el
             [ centerX
@@ -109,11 +116,18 @@ middle =
         [ width fill
         , height fill
         , padding 10
+        , Background.color white
         , mouseOver [ Background.color lightGrey ]
+        , backgroundFadeTransition
 
         -- , explain Debug.todo
         ]
         [ content ]
+
+
+backgroundFadeTransition : Attribute msg
+backgroundFadeTransition =
+    Transition.properties [ Transition.backgroundColor 1000 [] ] |> Element.htmlAttribute
 
 
 content : Element msg
@@ -121,7 +135,6 @@ content =
     el
         [ width fill
         , Region.mainContent
-        , mouseOver [ Background.color lightGrey ]
         ]
     <|
         el [ centerX, centerY ] (text contentText)
@@ -143,7 +156,9 @@ footerContent =
         [ centerX
         , centerY
         , padding 10
+        , Background.color transWhite
         , mouseOver [ Background.color grey ]
+        , backgroundFadeTransition
         ]
       <|
         text "ellisryanjames@gmail.com"
@@ -168,9 +183,12 @@ footerContent =
 footer : Model -> Element msg
 footer model =
     el
-        [ mouseOver [ Background.color lightGrey ]
+        [ Background.color white
+        , mouseOver [ Background.color lightGrey ]
+        , backgroundFadeTransition
         , Region.footer
-        , padding 10
+
+        -- , padding 10
         , width fill
 
         -- , explain Debug.todo
@@ -188,13 +206,13 @@ footer model =
         in
         case situation of
             ( Phone, _ ) ->
-                column [ width fill ] footerContent
+                column [ width fill, spacing 10 ] footerContent
 
             ( _, Landscape ) ->
-                row [ width fill ] footerContent
+                row [ width fill, spacing 10 ] footerContent
 
             ( _, Portrait ) ->
-                column [ width fill ] footerContent
+                column [ width fill, spacing 10 ] footerContent
 
 
 linkAttributes : List (Attribute msg)
@@ -202,6 +220,8 @@ linkAttributes =
     [ centerX
     , centerY
     , padding 10
+    , Background.color transWhite
     , mouseOver [ Background.color grey ]
+    , backgroundFadeTransition
     , Font.underline
     ]

@@ -11305,6 +11305,153 @@ var $mdgriffith$elm_ui$Internal$Model$Fill = function (a) {
 	return {$: 'Fill', a: a};
 };
 var $mdgriffith$elm_ui$Element$fill = $mdgriffith$elm_ui$Internal$Model$Fill(1);
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$Property = F3(
+	function (a, b, c) {
+		return {$: 'Property', a: a, b: b, c: c};
+	});
+var $andrewMacmurray$elm_simple_animation$Simple$Transition$property = $andrewMacmurray$elm_simple_animation$Internal$Transition$Property;
+var $andrewMacmurray$elm_simple_animation$Simple$Transition$backgroundColor = $andrewMacmurray$elm_simple_animation$Simple$Transition$property('background-color');
+var $mdgriffith$elm_ui$Element$htmlAttribute = $mdgriffith$elm_ui$Internal$Model$Attr;
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$Transition = function (a) {
+	return {$: 'Transition', a: a};
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$properties = $andrewMacmurray$elm_simple_animation$Internal$Transition$Transition;
+var $elm$core$List$intersperse = F2(
+	function (sep, xs) {
+		if (!xs.b) {
+			return _List_Nil;
+		} else {
+			var hd = xs.a;
+			var tl = xs.b;
+			var step = F2(
+				function (x, rest) {
+					return A2(
+						$elm$core$List$cons,
+						sep,
+						A2($elm$core$List$cons, x, rest));
+				});
+			var spersed = A3($elm$core$List$foldr, step, _List_Nil, tl);
+			return A2($elm$core$List$cons, hd, spersed);
+		}
+	});
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$intersperseValuesWith = function (separator) {
+	return A2(
+		$elm$core$Basics$composeR,
+		$elm$core$List$intersperse(separator),
+		$elm$core$String$concat);
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$Delay = function (a) {
+	return {$: 'Delay', a: a};
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$findDelayOption = A2(
+	$elm$core$List$foldl,
+	F2(
+		function (o, acc) {
+			if (o.$ === 'Delay') {
+				return o;
+			} else {
+				return acc;
+			}
+		}),
+	$andrewMacmurray$elm_simple_animation$Internal$Transition$Delay(0));
+var $andrewMacmurray$elm_simple_animation$Internal$Ease$Ease = {$: 'Ease'};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$Ease = function (a) {
+	return {$: 'Ease', a: a};
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$findEaseOption = A2(
+	$elm$core$List$foldl,
+	F2(
+		function (o, acc) {
+			if (o.$ === 'Ease') {
+				return o;
+			} else {
+				return acc;
+			}
+		}),
+	$andrewMacmurray$elm_simple_animation$Internal$Transition$Ease($andrewMacmurray$elm_simple_animation$Internal$Ease$Ease));
+var $andrewMacmurray$elm_simple_animation$Internal$Unit$ms = function (n) {
+	return $elm$core$String$fromInt(n) + 'ms';
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Ease$toString = function (e) {
+	switch (e.$) {
+		case 'Cubic':
+			var a = e.a;
+			var b = e.b;
+			var c = e.c;
+			var d = e.d;
+			return 'cubic-bezier(' + (A2(
+				$elm$core$String$join,
+				',',
+				_List_fromArray(
+					[
+						$elm$core$String$fromFloat(a),
+						$elm$core$String$fromFloat(b),
+						$elm$core$String$fromFloat(c),
+						$elm$core$String$fromFloat(d)
+					])) + ')');
+		case 'Linear':
+			return 'linear';
+		case 'Ease':
+			return 'ease';
+		case 'EaseIn':
+			return 'ease-in';
+		case 'EaseOut':
+			return 'ease-out';
+		default:
+			return 'ease-in-out';
+	}
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$renderOptionShorthand = function (o) {
+	if (o.$ === 'Delay') {
+		var n = o.a;
+		return $andrewMacmurray$elm_simple_animation$Internal$Unit$ms(n);
+	} else {
+		var e = o.a;
+		return $andrewMacmurray$elm_simple_animation$Internal$Ease$toString(e);
+	}
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$renderProperty = function (_v0) {
+	var name = _v0.a;
+	var duration = _v0.b;
+	var options = _v0.c;
+	return A2(
+		$andrewMacmurray$elm_simple_animation$Internal$Transition$intersperseValuesWith,
+		' ',
+		_List_fromArray(
+			[
+				name,
+				$andrewMacmurray$elm_simple_animation$Internal$Unit$ms(duration),
+				$andrewMacmurray$elm_simple_animation$Internal$Transition$renderOptionShorthand(
+				$andrewMacmurray$elm_simple_animation$Internal$Transition$findEaseOption(options)),
+				$andrewMacmurray$elm_simple_animation$Internal$Transition$renderOptionShorthand(
+				$andrewMacmurray$elm_simple_animation$Internal$Transition$findDelayOption(options))
+			]));
+};
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$render = function (_v0) {
+	var props = _v0.a;
+	return A2(
+		$andrewMacmurray$elm_simple_animation$Internal$Transition$intersperseValuesWith,
+		', ',
+		A2($elm$core$List$map, $andrewMacmurray$elm_simple_animation$Internal$Transition$renderProperty, props));
+};
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $andrewMacmurray$elm_simple_animation$Internal$Transition$toAttr = A2(
+	$elm$core$Basics$composeR,
+	$andrewMacmurray$elm_simple_animation$Internal$Transition$render,
+	$elm$html$Html$Attributes$style('transition'));
+var $andrewMacmurray$elm_simple_animation$Simple$Transition$properties = A2($elm$core$Basics$composeR, $andrewMacmurray$elm_simple_animation$Internal$Transition$properties, $andrewMacmurray$elm_simple_animation$Internal$Transition$toAttr);
+var $author$project$Main$backgroundFadeTransition = $mdgriffith$elm_ui$Element$htmlAttribute(
+	$andrewMacmurray$elm_simple_animation$Simple$Transition$properties(
+		_List_fromArray(
+			[
+				A2($andrewMacmurray$elm_simple_animation$Simple$Transition$backgroundColor, 1000, _List_Nil)
+			])));
 var $mdgriffith$elm_ui$Element$el = F2(
 	function (attrs, child) {
 		return A4(
@@ -11507,17 +11654,21 @@ var $mdgriffith$elm_ui$Element$padding = function (x) {
 			f,
 			f));
 };
+var $mdgriffith$elm_ui$Element$rgba = $mdgriffith$elm_ui$Internal$Model$Rgba;
+var $author$project$Colors$transWhite = A4($mdgriffith$elm_ui$Element$rgba, 1, 1, 1, 0);
 var $mdgriffith$elm_ui$Element$Font$underline = $mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.underline);
 var $author$project$Main$linkAttributes = _List_fromArray(
 	[
 		$mdgriffith$elm_ui$Element$centerX,
 		$mdgriffith$elm_ui$Element$centerY,
 		$mdgriffith$elm_ui$Element$padding(10),
+		$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$transWhite),
 		$mdgriffith$elm_ui$Element$mouseOver(
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$grey)
 			])),
+		$author$project$Main$backgroundFadeTransition,
 		$mdgriffith$elm_ui$Element$Font$underline
 	]);
 var $elm$html$Html$Attributes$href = function (url) {
@@ -11574,11 +11725,13 @@ var $author$project$Main$footerContent = _List_fromArray(
 				$mdgriffith$elm_ui$Element$centerX,
 				$mdgriffith$elm_ui$Element$centerY,
 				$mdgriffith$elm_ui$Element$padding(10),
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$transWhite),
 				$mdgriffith$elm_ui$Element$mouseOver(
 				_List_fromArray(
 					[
 						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$grey)
-					]))
+					])),
+				$author$project$Main$backgroundFadeTransition
 			]),
 		$mdgriffith$elm_ui$Element$text('ellisryanjames@gmail.com')),
 		A2(
@@ -11633,18 +11786,38 @@ var $mdgriffith$elm_ui$Element$row = F2(
 						attrs))),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
+var $mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
+	function (a, b, c) {
+		return {$: 'SpacingStyle', a: a, b: b, c: c};
+	});
+var $mdgriffith$elm_ui$Internal$Flag$spacing = $mdgriffith$elm_ui$Internal$Flag$flag(3);
+var $mdgriffith$elm_ui$Internal$Model$spacingName = F2(
+	function (x, y) {
+		return 'spacing-' + ($elm$core$String$fromInt(x) + ('-' + $elm$core$String$fromInt(y)));
+	});
+var $mdgriffith$elm_ui$Element$spacing = function (x) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$spacing,
+		A3(
+			$mdgriffith$elm_ui$Internal$Model$SpacingStyle,
+			A2($mdgriffith$elm_ui$Internal$Model$spacingName, x, x),
+			x,
+			x));
+};
 var $author$project$Main$footer = function (model) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
 				$mdgriffith$elm_ui$Element$mouseOver(
 				_List_fromArray(
 					[
 						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
 					])),
+				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$Region$footer,
-				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 			]),
 		function () {
@@ -11662,7 +11835,8 @@ var $author$project$Main$footer = function (model) {
 							$mdgriffith$elm_ui$Element$row,
 							_List_fromArray(
 								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									$mdgriffith$elm_ui$Element$spacing(10)
 								]),
 							$author$project$Main$footerContent);
 					}
@@ -11675,7 +11849,8 @@ var $author$project$Main$footer = function (model) {
 							$mdgriffith$elm_ui$Element$column,
 							_List_fromArray(
 								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+									$mdgriffith$elm_ui$Element$spacing(10)
 								]),
 							$author$project$Main$footerContent);
 					}
@@ -11686,7 +11861,8 @@ var $author$project$Main$footer = function (model) {
 				$mdgriffith$elm_ui$Element$column,
 				_List_fromArray(
 					[
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+						$mdgriffith$elm_ui$Element$spacing(10)
 					]),
 				$author$project$Main$footerContent);
 		}());
@@ -11711,11 +11887,13 @@ var $author$project$Main$header = A2(
 		[
 			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 			$mdgriffith$elm_ui$Element$padding(10),
+			$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
 			$mdgriffith$elm_ui$Element$mouseOver(
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
-				]))
+				])),
+			$author$project$Main$backgroundFadeTransition
 		]),
 	_List_fromArray(
 		[
@@ -11936,8 +12114,6 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 				_Utils_ap($mdgriffith$elm_ui$Internal$Model$rootStyle, attrs)),
 			child);
 	});
-var $mdgriffith$elm_ui$Element$layout = $mdgriffith$elm_ui$Element$layoutWith(
-	{options: _List_Nil});
 var $author$project$Main$contentText = 'Howdy!\r\n\r\nI am Ryan Ellis. \r\n(Not the hockey player.) \r\n(Not the racecar driver.)\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
@@ -11946,12 +12122,7 @@ var $author$project$Main$content = A2(
 	_List_fromArray(
 		[
 			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$Region$mainContent,
-			$mdgriffith$elm_ui$Element$mouseOver(
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
-				]))
+			$mdgriffith$elm_ui$Element$Region$mainContent
 		]),
 	A2(
 		$mdgriffith$elm_ui$Element$el,
@@ -11965,35 +12136,18 @@ var $author$project$Main$middle = A2(
 			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 			$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 			$mdgriffith$elm_ui$Element$padding(10),
+			$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
 			$mdgriffith$elm_ui$Element$mouseOver(
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
-				]))
+				])),
+			$author$project$Main$backgroundFadeTransition
 		]),
 	_List_fromArray(
 		[$author$project$Main$content]));
 var $mdgriffith$elm_ui$Internal$Model$Monospace = {$: 'Monospace'};
 var $mdgriffith$elm_ui$Element$Font$monospace = $mdgriffith$elm_ui$Internal$Model$Monospace;
-var $mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
-	function (a, b, c) {
-		return {$: 'SpacingStyle', a: a, b: b, c: c};
-	});
-var $mdgriffith$elm_ui$Internal$Flag$spacing = $mdgriffith$elm_ui$Internal$Flag$flag(3);
-var $mdgriffith$elm_ui$Internal$Model$spacingName = F2(
-	function (x, y) {
-		return 'spacing-' + ($elm$core$String$fromInt(x) + ('-' + $elm$core$String$fromInt(y)));
-	});
-var $mdgriffith$elm_ui$Element$spacing = function (x) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$spacing,
-		A3(
-			$mdgriffith$elm_ui$Internal$Model$SpacingStyle,
-			A2($mdgriffith$elm_ui$Internal$Model$spacingName, x, x),
-			x,
-			x));
-};
 var $author$project$Colors$textColor = $author$project$Colors$black;
 var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
 	function (a, b, c, d, e) {
@@ -12012,8 +12166,9 @@ var $mdgriffith$elm_ui$Element$Border$width = function (v) {
 			v));
 };
 var $author$project$Main$view = function (model) {
-	return A2(
-		$mdgriffith$elm_ui$Element$layout,
+	return A3(
+		$mdgriffith$elm_ui$Element$layoutWith,
+		{options: _List_Nil},
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$Font$family(

@@ -36,3 +36,8 @@ lightGrey =
 white : Color
 white =
     rgb 1 1 1
+
+
+transWhite : Color
+transWhite =
+    rgba 1 1 1 0
