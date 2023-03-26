@@ -12498,7 +12498,9 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[$mdgriffith$elm_ui$Element$Font$monospace])),
 				$mdgriffith$elm_ui$Element$Font$color($author$project$Colors$textColor),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$bgColor)
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$bgColor),
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 			]),
 		A2(
 			$mdgriffith$elm_ui$Element$column,

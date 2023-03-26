@@ -111,6 +111,8 @@ view model =
         [ Font.family [ Font.monospace ]
         , Font.color textColor
         , Background.color bgColor
+        , width fill
+        , height fill
         ]
     <|
         column
