@@ -61,14 +61,14 @@ update msg model =
             if model.mouseMoveCount == 1 then
                 ( { model
                     | conway = Conway.update model.conway
-                    , mouseMoveCount = modBy 10 (model.mouseMoveCount + 1)
+                    , mouseMoveCount = modBy 8 (model.mouseMoveCount + 1)
                   }
                 , Cmd.none
                 )
 
             else
                 ( { model
-                    | mouseMoveCount = modBy 10 (model.mouseMoveCount + 1)
+                    | mouseMoveCount = modBy 8 (model.mouseMoveCount + 1)
                   }
                 , Cmd.none
                 )
@@ -154,20 +154,17 @@ middle model =
         , height fill
         , padding 10
         , Background.color white
-        , mouseOver [ Background.color lightGrey ]
+
+        -- , mouseOver [ Background.color lightGrey ]
         , ElEvents.onMouseMove PossibleConwayTrigger
         , ElEvents.onClick ImmediateConwayTrigger
-        , backgroundFadeTransition
+
+        -- , backgroundFadeTransition
         , behindContent <| Conway.view model.conway
 
         -- , explain Debug.todo
         ]
         [ content ]
-
-
-conwayElement : Model -> Element.Element msg
-conwayElement model =
-    el [] (Conway.view model.conway)
 
 
 backgroundFadeTransition : Attribute msg

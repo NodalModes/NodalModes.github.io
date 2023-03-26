@@ -2,11 +2,12 @@ module Conway exposing (..)
 
 import Array exposing (Array)
 import Colors exposing (..)
-import Element exposing (column, el, explain, fill, height, none, px, row, text, width)
+import Element exposing (column, el, explain, fill, height, none, padding, paddingXY, px, row, spacing, text, width)
 import Element.Background as Background
 import Html exposing (Html)
 import Maybe exposing (andThen)
 import Random
+import Simple.Transition as Transition exposing (properties)
 
 
 type alias Conway =
@@ -19,7 +20,7 @@ type alias Conway =
 view : Conway -> Element.Element msg
 view conway =
     column
-        [ width fill, height fill ]
+        [ width fill, height fill, spacing 10, paddingXY 10 0 ]
     <|
         (arrArrToListList conway |> something)
 
@@ -32,7 +33,7 @@ arrArrToListList conway =
 something : List (List Bool) -> List (Element.Element msg)
 something lLBool =
     List.map (List.map boolToText) lLBool
-        |> List.map (row [ width fill, height fill ])
+        |> List.map (row [ width fill, height fill, spacing 10 ])
 
 
 boolToText : Bool -> Element.Element msg
@@ -40,6 +41,7 @@ boolToText bool =
     if bool then
         el
             [ Background.color lightGrey
+            , backgroundFadeTransition
             , width fill
             , height fill
             ]
@@ -48,10 +50,16 @@ boolToText bool =
     else
         el
             [ Background.color white
+            , backgroundFadeTransition
             , width fill
             , height fill
             ]
             (text "")
+
+
+backgroundFadeTransition : Element.Attribute msg
+backgroundFadeTransition =
+    Transition.properties [ Transition.backgroundColor 500 [] ] |> Element.htmlAttribute
 
 
 update : Conway -> Conway
@@ -157,7 +165,7 @@ initializeGrid width height =
 
 getBoolFromIndex : Int -> Int -> Bool
 getBoolFromIndex bbb index =
-    if modBy 8 index < 4 && modBy 3 bbb < 1 || index == bbb - 1 || index == bbb || index == bbb + 1 then
+    if index >= bbb - 3 && index <= bbb + 3 then
         True
 
     else

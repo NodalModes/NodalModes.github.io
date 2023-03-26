@@ -5223,10 +5223,10 @@ var $author$project$Main$getDevice = F2(
 		return $mdgriffith$elm_ui$Element$classifyDevice(
 			{height: height, width: width});
 	});
-var $elm$core$Basics$modBy = _Basics_modBy;
+var $elm$core$Basics$ge = _Utils_ge;
 var $author$project$Conway$getBoolFromIndex = F2(
 	function (bbb, index) {
-		return (((A2($elm$core$Basics$modBy, 8, index) < 4) && (A2($elm$core$Basics$modBy, 3, bbb) < 1)) || (_Utils_eq(index, bbb - 1) || (_Utils_eq(index, bbb) || _Utils_eq(index, bbb + 1)))) ? true : false;
+		return ((_Utils_cmp(index, bbb - 3) > -1) && (_Utils_cmp(index, bbb + 3) < 1)) ? true : false;
 	});
 var $author$project$Conway$initializeGrid = F2(
 	function (width, height) {
@@ -5691,6 +5691,7 @@ var $author$project$Main$subscriptions = function (_v0) {
 					}))
 			]));
 };
+var $elm$core$Basics$modBy = _Basics_modBy;
 var $elm$core$Maybe$andThen = F2(
 	function (callback, maybeValue) {
 		if (maybeValue.$ === 'Just') {
@@ -5703,7 +5704,6 @@ var $elm$core$Maybe$andThen = F2(
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
 var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
-var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
 var $elm$core$Array$getHelp = F3(
 	function (shift, index, tree) {
@@ -5849,13 +5849,13 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							conway: $author$project$Conway$update(model.conway),
-							mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+							mouseMoveCount: A2($elm$core$Basics$modBy, 8, model.mouseMoveCount + 1)
 						}),
 					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{
-							mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+							mouseMoveCount: A2($elm$core$Basics$modBy, 8, model.mouseMoveCount + 1)
 						}),
 					$elm$core$Platform$Cmd$none);
 			default:
@@ -12368,12 +12368,48 @@ var $author$project$Conway$arrArrToListList = function (conway) {
 		$elm$core$Array$toList,
 		$elm$core$Array$toList(conway.grid));
 };
+var $mdgriffith$elm_ui$Element$paddingXY = F2(
+	function (x, y) {
+		if (_Utils_eq(x, y)) {
+			var f = x;
+			return A2(
+				$mdgriffith$elm_ui$Internal$Model$StyleClass,
+				$mdgriffith$elm_ui$Internal$Flag$padding,
+				A5(
+					$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+					'p-' + $elm$core$String$fromInt(x),
+					f,
+					f,
+					f,
+					f));
+		} else {
+			var yFloat = y;
+			var xFloat = x;
+			return A2(
+				$mdgriffith$elm_ui$Internal$Model$StyleClass,
+				$mdgriffith$elm_ui$Internal$Flag$padding,
+				A5(
+					$mdgriffith$elm_ui$Internal$Model$PaddingStyle,
+					'p-' + ($elm$core$String$fromInt(x) + ('-' + $elm$core$String$fromInt(y))),
+					yFloat,
+					xFloat,
+					yFloat,
+					xFloat));
+		}
+	});
+var $author$project$Conway$backgroundFadeTransition = $mdgriffith$elm_ui$Element$htmlAttribute(
+	$andrewMacmurray$elm_simple_animation$Simple$Transition$properties(
+		_List_fromArray(
+			[
+				A2($andrewMacmurray$elm_simple_animation$Simple$Transition$backgroundColor, 500, _List_Nil)
+			])));
 var $author$project$Conway$boolToText = function (bool) {
 	return bool ? A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey),
+				$author$project$Conway$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 			]),
@@ -12382,6 +12418,7 @@ var $author$project$Conway$boolToText = function (bool) {
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
+				$author$project$Conway$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 			]),
@@ -12394,7 +12431,8 @@ var $author$project$Conway$something = function (lLBool) {
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(10)
 				])),
 		A2(
 			$elm$core$List$map,
@@ -12407,7 +12445,9 @@ var $author$project$Conway$view = function (conway) {
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$spacing(10),
+				A2($mdgriffith$elm_ui$Element$paddingXY, 10, 0)
 			]),
 		$author$project$Conway$something(
 			$author$project$Conway$arrArrToListList(conway)));
@@ -12421,14 +12461,8 @@ var $author$project$Main$middle = function (model) {
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$padding(10),
 				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
-				$mdgriffith$elm_ui$Element$mouseOver(
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
-					])),
 				$mdgriffith$elm_ui$Element$Events$onMouseMove($author$project$Main$PossibleConwayTrigger),
 				$mdgriffith$elm_ui$Element$Events$onClick($author$project$Main$ImmediateConwayTrigger),
-				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$behindContent(
 				$author$project$Conway$view(model.conway))
 			]),
