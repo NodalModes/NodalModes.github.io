@@ -5868,17 +5868,6 @@ var $author$project$Main$update = F2(
 					$elm$core$Platform$Cmd$none);
 		}
 	});
-var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
-	function (a, b, c, d) {
-		return {$: 'Rgba', a: a, b: b, c: c, d: d};
-	});
-var $mdgriffith$elm_ui$Element$rgb = F3(
-	function (r, g, b) {
-		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, r, g, b, 1);
-	});
-var $author$project$Colors$white = A3($mdgriffith$elm_ui$Element$rgb, 1, 1, 1);
-var $author$project$Colors$bgColor = $author$project$Colors$white;
-var $author$project$Colors$black = A3($mdgriffith$elm_ui$Element$rgb, 0, 0, 0);
 var $mdgriffith$elm_ui$Internal$Model$Colored = F3(
 	function (a, b, c) {
 		return {$: 'Colored', a: a, b: b, c: c};
@@ -11438,6 +11427,15 @@ var $mdgriffith$elm_ui$Element$column = F2(
 						attrs))),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
+var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
+	function (a, b, c, d) {
+		return {$: 'Rgba', a: a, b: b, c: c, d: d};
+	});
+var $mdgriffith$elm_ui$Element$rgb = F3(
+	function (r, g, b) {
+		return A4($mdgriffith$elm_ui$Internal$Model$Rgba, r, g, b, 1);
+	});
+var $author$project$Colors$darkGreen = A3($mdgriffith$elm_ui$Element$rgb, 0.4166666666666667, 0.5, 0.16666666666666666);
 var $mdgriffith$elm_ui$Internal$Model$FontFamily = F2(
 	function (a, b) {
 		return {$: 'FontFamily', a: a, b: b};
@@ -11674,7 +11672,7 @@ var $mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
 };
 var $mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
 var $mdgriffith$elm_ui$Element$centerY = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$CenterY);
-var $author$project$Colors$grey = A3($mdgriffith$elm_ui$Element$rgb, 0.5, 0.5833333333333334, 0.5);
+var $author$project$Colors$green = A3($mdgriffith$elm_ui$Element$rgb, 0.5833333333333334, 0.6666666666666666, 0.3333333333333333);
 var $mdgriffith$elm_ui$Internal$Model$Hover = {$: 'Hover'};
 var $mdgriffith$elm_ui$Internal$Model$PseudoSelector = F2(
 	function (a, b) {
@@ -11856,7 +11854,7 @@ var $author$project$Main$linkAttributes = _List_fromArray(
 		$mdgriffith$elm_ui$Element$mouseOver(
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$grey)
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$green)
 			])),
 		$author$project$Main$backgroundFadeTransition,
 		$mdgriffith$elm_ui$Element$Font$underline
@@ -11919,7 +11917,7 @@ var $author$project$Main$footerContent = _List_fromArray(
 				$mdgriffith$elm_ui$Element$mouseOver(
 				_List_fromArray(
 					[
-						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$grey)
+						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$green)
 					])),
 				$author$project$Main$backgroundFadeTransition
 			]),
@@ -11955,7 +11953,7 @@ var $author$project$Main$footerContent = _List_fromArray(
 				url: 'https://elm-lang.org/'
 			}))
 	]);
-var $author$project$Colors$lightGrey = A3($mdgriffith$elm_ui$Element$rgb, 0.75, 0.8333333333333334, 0.75);
+var $author$project$Colors$lightGreen = A3($mdgriffith$elm_ui$Element$rgb, 0.75, 0.8333333333333334, 0.5833333333333334);
 var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
 var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
 var $mdgriffith$elm_ui$Element$row = F2(
@@ -11995,6 +11993,7 @@ var $mdgriffith$elm_ui$Element$spacing = function (x) {
 			x,
 			x));
 };
+var $author$project$Colors$white = A3($mdgriffith$elm_ui$Element$rgb, 1, 1, 1);
 var $author$project$Main$footer = function (model) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
@@ -12004,7 +12003,7 @@ var $author$project$Main$footer = function (model) {
 				$mdgriffith$elm_ui$Element$mouseOver(
 				_List_fromArray(
 					[
-						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
+						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGreen)
 					])),
 				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$Region$footer,
@@ -12057,6 +12056,11 @@ var $author$project$Main$footer = function (model) {
 				$author$project$Main$footerContent);
 		}());
 };
+var $mdgriffith$elm_ui$Internal$Model$ForceHover = {$: 'ForceHover'};
+var $mdgriffith$elm_ui$Internal$Model$HoverOption = function (a) {
+	return {$: 'HoverOption', a: a};
+};
+var $mdgriffith$elm_ui$Element$forceHover = $mdgriffith$elm_ui$Internal$Model$HoverOption($mdgriffith$elm_ui$Internal$Model$ForceHover);
 var $mdgriffith$elm_ui$Internal$Model$Heading = function (a) {
 	return {$: 'Heading', a: a};
 };
@@ -12081,7 +12085,7 @@ var $author$project$Main$header = A2(
 			$mdgriffith$elm_ui$Element$mouseOver(
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
+					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGreen)
 				])),
 			$author$project$Main$backgroundFadeTransition
 		]),
@@ -12408,7 +12412,7 @@ var $author$project$Conway$boolToText = function (bool) {
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
 			[
-				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey),
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGreen),
 				$author$project$Conway$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
@@ -12471,6 +12475,7 @@ var $author$project$Main$middle = function (model) {
 };
 var $mdgriffith$elm_ui$Internal$Model$Monospace = {$: 'Monospace'};
 var $mdgriffith$elm_ui$Element$Font$monospace = $mdgriffith$elm_ui$Internal$Model$Monospace;
+var $author$project$Colors$black = A3($mdgriffith$elm_ui$Element$rgb, 0, 0, 0);
 var $author$project$Colors$textColor = $author$project$Colors$black;
 var $mdgriffith$elm_ui$Internal$Model$BorderWidth = F5(
 	function (a, b, c, d, e) {
@@ -12491,14 +12496,30 @@ var $mdgriffith$elm_ui$Element$Border$width = function (v) {
 var $author$project$Main$view = function (model) {
 	return A3(
 		$mdgriffith$elm_ui$Element$layoutWith,
-		{options: _List_Nil},
+		{
+			options: function () {
+				var _v0 = model.device._class;
+				switch (_v0.$) {
+					case 'Phone':
+						return _List_fromArray(
+							[$mdgriffith$elm_ui$Element$forceHover]);
+					case 'Tablet':
+						return _List_fromArray(
+							[$mdgriffith$elm_ui$Element$forceHover]);
+					case 'Desktop':
+						return _List_Nil;
+					default:
+						return _List_Nil;
+				}
+			}()
+		},
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$Font$family(
 				_List_fromArray(
 					[$mdgriffith$elm_ui$Element$Font$monospace])),
 				$mdgriffith$elm_ui$Element$Font$color($author$project$Colors$textColor),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$bgColor),
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 			]),
@@ -12507,7 +12528,7 @@ var $author$project$Main$view = function (model) {
 			_List_fromArray(
 				[
 					$mdgriffith$elm_ui$Element$Border$width(10),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$Colors$black),
+					$mdgriffith$elm_ui$Element$Border$color($author$project$Colors$darkGreen),
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$spacing(10)

@@ -105,19 +105,29 @@ view : Model -> Html.Html Msg
 view model =
     layoutWith
         { options =
-            [-- forceHover
-            ]
+            case model.device.class of
+                Phone ->
+                    [ forceHover ]
+
+                Tablet ->
+                    [ forceHover ]
+
+                Desktop ->
+                    []
+
+                BigDesktop ->
+                    []
         }
         [ Font.family [ Font.monospace ]
         , Font.color textColor
-        , Background.color bgColor
+        , Background.color white
         , width fill
         , height fill
         ]
     <|
         column
             [ Border.width 10
-            , Border.color black
+            , Border.color darkGreen
             , width fill
             , height fill
             , spacing 10
@@ -136,7 +146,7 @@ header =
 
         -- , explain Debug.todo
         , Background.color white
-        , mouseOver [ Background.color lightGrey ]
+        , mouseOver [ Background.color lightGreen ]
         , backgroundFadeTransition
         ]
         [ el
@@ -201,7 +211,7 @@ footerContent =
         , centerY
         , padding 10
         , Background.color transWhite
-        , mouseOver [ Background.color grey ]
+        , mouseOver [ Background.color green ]
         , backgroundFadeTransition
         ]
       <|
@@ -228,7 +238,7 @@ footer : Model -> Element msg
 footer model =
     el
         [ Background.color white
-        , mouseOver [ Background.color lightGrey ]
+        , mouseOver [ Background.color lightGreen ]
         , backgroundFadeTransition
         , Region.footer
 
@@ -265,7 +275,7 @@ linkAttributes =
     , centerY
     , padding 10
     , Background.color transWhite
-    , mouseOver [ Background.color grey ]
+    , mouseOver [ Background.color green ]
     , backgroundFadeTransition
     , Font.underline
     ]

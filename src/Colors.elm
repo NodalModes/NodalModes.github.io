@@ -18,19 +18,24 @@ black =
     rgb 0 0 0
 
 
-darkGrey : Color
-darkGrey =
-    rgb 0.25 0.3333333333333333 0.25
+darkGreen : Color
+darkGreen =
+    rgb 0.4166666666666667 0.5 0.16666666666666666
 
 
-grey : Color
-grey =
-    rgb 0.5 0.5833333333333334 0.5
+green : Color
+green =
+    rgb 0.5833333333333334 0.6666666666666666 0.3333333333333333
+
+
+lightGreen : Color
+lightGreen =
+    rgb 0.75 0.8333333333333334 0.5833333333333334
 
 
 lightGrey : Color
 lightGrey =
-    rgb 0.75 0.8333333333333334 0.75
+    rgb 0.9166666666666667 0.9166666666666667 0.8333333333333334
 
 
 white : Color

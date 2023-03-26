@@ -40,7 +40,7 @@ boolToText : Bool -> Element.Element msg
 boolToText bool =
     if bool then
         el
-            [ Background.color lightGrey
+            [ Background.color lightGreen
             , backgroundFadeTransition
             , width fill
             , height fill
