@@ -157,7 +157,7 @@ initializeGrid width height =
 
 getBoolFromIndex : Int -> Int -> Bool
 getBoolFromIndex bbb index =
-    if modBy 20 index < 5 && modBy 20 bbb < 5 || index == bbb - 1 || index == bbb + 1 then
+    if modBy 8 index < 4 && modBy 3 bbb < 1 || index == bbb - 1 || index == bbb || index == bbb + 1 then
         True
 
     else

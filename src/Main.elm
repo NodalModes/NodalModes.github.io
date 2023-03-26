@@ -7,6 +7,7 @@ import Conway exposing (..)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Events as ElEvents
 import Element.Font as Font
 import Element.Region as Region
 import Html exposing (footer, header)
@@ -26,12 +27,14 @@ main =
 
 type Msg
     = Resized Int Int
+    | ConwayTrigger
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { device = getDevice flags.windowWidth flags.windowHeight
       , conway = Conway.init ()
+      , mouseMoveCount = 0
       }
     , Cmd.none
     )
@@ -53,6 +56,22 @@ update msg model =
             , Cmd.none
             )
 
+        ConwayTrigger ->
+            if model.mouseMoveCount == 1 then
+                ( { model
+                    | conway = Conway.update model.conway
+                    , mouseMoveCount = modBy 10 (model.mouseMoveCount + 1)
+                  }
+                , Cmd.none
+                )
+
+            else
+                ( { model
+                    | mouseMoveCount = modBy 10 (model.mouseMoveCount + 1)
+                  }
+                , Cmd.none
+                )
+
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
@@ -64,6 +83,7 @@ subscriptions _ =
 type alias Model =
     { device : Device
     , conway : Conway.Conway
+    , mouseMoveCount : Int
     }
 
 
@@ -73,7 +93,7 @@ type alias Flags =
     }
 
 
-view : Model -> Html.Html msg
+view : Model -> Html.Html Msg
 view model =
     layoutWith
         { options =
@@ -119,7 +139,7 @@ header =
         ]
 
 
-middle : Model -> Element msg
+middle : Model -> Element Msg
 middle model =
     row
         [ width fill
@@ -127,12 +147,18 @@ middle model =
         , padding 10
         , Background.color white
         , mouseOver [ Background.color lightGrey ]
+        , ElEvents.onMouseMove ConwayTrigger
         , backgroundFadeTransition
-        , behindContent (Conway.view model.conway)
+        , behindContent <| Conway.view model.conway
 
         -- , explain Debug.todo
         ]
         [ content ]
+
+
+conwayElement : Model -> Element.Element msg
+conwayElement model =
+    el [] (Conway.view model.conway)
 
 
 backgroundFadeTransition : Attribute msg

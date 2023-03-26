@@ -5226,7 +5226,7 @@ var $author$project$Main$getDevice = F2(
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $author$project$Conway$getBoolFromIndex = F2(
 	function (bbb, index) {
-		return (((A2($elm$core$Basics$modBy, 20, index) < 5) && (A2($elm$core$Basics$modBy, 20, bbb) < 5)) || (_Utils_eq(index, bbb - 1) || _Utils_eq(index, bbb + 1))) ? true : false;
+		return (((A2($elm$core$Basics$modBy, 8, index) < 4) && (A2($elm$core$Basics$modBy, 3, bbb) < 1)) || (_Utils_eq(index, bbb - 1) || (_Utils_eq(index, bbb) || _Utils_eq(index, bbb + 1)))) ? true : false;
 	});
 var $author$project$Conway$initializeGrid = F2(
 	function (width, height) {
@@ -5255,7 +5255,8 @@ var $author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
 		{
 			conway: $author$project$Conway$init(_Utils_Tuple0),
-			device: A2($author$project$Main$getDevice, flags.windowWidth, flags.windowHeight)
+			device: A2($author$project$Main$getDevice, flags.windowWidth, flags.windowHeight),
+			mouseMoveCount: 0
 		},
 		$elm$core$Platform$Cmd$none);
 };
@@ -5830,16 +5831,33 @@ var $author$project$Conway$update = function (conway) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		var newWidth = msg.a;
-		var newHeight = msg.b;
-		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{
-					conway: $author$project$Conway$update(model.conway),
-					device: A2($author$project$Main$getDevice, newWidth, newHeight)
-				}),
-			$elm$core$Platform$Cmd$none);
+		if (msg.$ === 'Resized') {
+			var newWidth = msg.a;
+			var newHeight = msg.b;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{
+						conway: $author$project$Conway$update(model.conway),
+						device: A2($author$project$Main$getDevice, newWidth, newHeight)
+					}),
+				$elm$core$Platform$Cmd$none);
+		} else {
+			return (model.mouseMoveCount === 1) ? _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{
+						conway: $author$project$Conway$update(model.conway),
+						mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+					}),
+				$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{
+						mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+					}),
+				$elm$core$Platform$Cmd$none);
+		}
 	});
 var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
 	function (a, b, c, d) {
@@ -12277,6 +12295,7 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 				_Utils_ap($mdgriffith$elm_ui$Internal$Model$rootStyle, attrs)),
 			child);
 	});
+var $author$project$Main$ConwayTrigger = {$: 'ConwayTrigger'};
 var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
 var $mdgriffith$elm_ui$Element$createNearby = F2(
 	function (loc, element) {
@@ -12304,6 +12323,28 @@ var $author$project$Main$content = A2(
 		_List_fromArray(
 			[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
 		$mdgriffith$elm_ui$Element$text($author$project$Main$contentText)));
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $mdgriffith$elm_ui$Element$Events$on = F2(
+	function (event, decode) {
+		return $mdgriffith$elm_ui$Internal$Model$Attr(
+			A2($elm$html$Html$Events$on, event, decode));
+	});
+var $mdgriffith$elm_ui$Element$Events$onMouseMove = function (msg) {
+	return A2(
+		$mdgriffith$elm_ui$Element$Events$on,
+		'mousemove',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $author$project$Conway$arrArrToListList = function (conway) {
 	return A2(
 		$elm$core$List$map,
@@ -12368,6 +12409,7 @@ var $author$project$Main$middle = function (model) {
 					[
 						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
 					])),
+				$mdgriffith$elm_ui$Element$Events$onMouseMove($author$project$Main$ConwayTrigger),
 				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$behindContent(
 				$author$project$Conway$view(model.conway))
