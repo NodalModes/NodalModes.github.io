@@ -3,6 +3,7 @@ module Main exposing (main)
 import Browser exposing (element)
 import Browser.Events as Events
 import Colors exposing (..)
+import Conway exposing (..)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
@@ -29,7 +30,9 @@ type Msg
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( { device = getDevice flags.windowWidth flags.windowHeight }
+    ( { device = getDevice flags.windowWidth flags.windowHeight
+      , conway = Conway.init ()
+      }
     , Cmd.none
     )
 
@@ -43,7 +46,12 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Resized newWidth newHeight ->
-            ( { model | device = getDevice newWidth newHeight }, Cmd.none )
+            ( { model
+                | device = getDevice newWidth newHeight
+                , conway = Conway.update model.conway
+              }
+            , Cmd.none
+            )
 
 
 subscriptions : Model -> Sub Msg
@@ -55,6 +63,7 @@ subscriptions _ =
 
 type alias Model =
     { device : Device
+    , conway : Conway.Conway
     }
 
 
@@ -84,7 +93,7 @@ view model =
             , spacing 10
             ]
             [ header
-            , middle
+            , middle model
             , footer model
             ]
 
@@ -110,8 +119,8 @@ header =
         ]
 
 
-middle : Element msg
-middle =
+middle : Model -> Element msg
+middle model =
     row
         [ width fill
         , height fill
@@ -119,6 +128,7 @@ middle =
         , Background.color white
         , mouseOver [ Background.color lightGrey ]
         , backgroundFadeTransition
+        , behindContent (Conway.view model.conway)
 
         -- , explain Debug.todo
         ]

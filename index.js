@@ -5223,11 +5223,38 @@ var $author$project$Main$getDevice = F2(
 		return $mdgriffith$elm_ui$Element$classifyDevice(
 			{height: height, width: width});
 	});
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $author$project$Conway$getBoolFromIndex = F2(
+	function (bbb, index) {
+		return (((A2($elm$core$Basics$modBy, 20, index) < 5) && (A2($elm$core$Basics$modBy, 20, bbb) < 5)) || (_Utils_eq(index, bbb - 1) || _Utils_eq(index, bbb + 1))) ? true : false;
+	});
+var $author$project$Conway$initializeGrid = F2(
+	function (width, height) {
+		return A2(
+			$elm$core$Array$initialize,
+			width,
+			function (bbb) {
+				return A2(
+					$elm$core$Array$initialize,
+					height,
+					$author$project$Conway$getBoolFromIndex(bbb));
+			});
+	});
+var $author$project$Conway$init = function (_v0) {
+	var w = 32;
+	var h = 18;
+	return {
+		grid: A2($author$project$Conway$initializeGrid, h, w),
+		height: h,
+		width: w
+	};
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (flags) {
 	return _Utils_Tuple2(
 		{
+			conway: $author$project$Conway$init(_Utils_Tuple0),
 			device: A2($author$project$Main$getDevice, flags.windowWidth, flags.windowHeight)
 		},
 		$elm$core$Platform$Cmd$none);
@@ -5663,6 +5690,144 @@ var $author$project$Main$subscriptions = function (_v0) {
 					}))
 			]));
 };
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (maybeValue.$ === 'Just') {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = $elm$core$Array$bitMask & (index >>> shift);
+			var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (_v0.$ === 'SubTree') {
+				var subTree = _v0.a;
+				var $temp$shift = shift - $elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _v0.a;
+				return A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var $elm$core$Array$get = F2(
+	function (index, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? $elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? $elm$core$Maybe$Just(
+			A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, tail)) : $elm$core$Maybe$Just(
+			A3($elm$core$Array$getHelp, startShift, index, tree)));
+	});
+var $author$project$Conway$getNeighborAlive = F5(
+	function (h, w, g, y, x) {
+		var _v0 = A2(
+			$elm$core$Maybe$andThen,
+			$elm$core$Array$get(
+				A2($elm$core$Basics$modBy, w, x)),
+			A2(
+				$elm$core$Array$get,
+				A2($elm$core$Basics$modBy, h, y),
+				g));
+		if (_v0.$ === 'Just') {
+			var b = _v0.a;
+			return b ? 1 : 0;
+		} else {
+			return 0;
+		}
+	});
+var $author$project$Conway$applyRules = F4(
+	function (conway, y, x, alive) {
+		var w = conway.width;
+		var h = conway.height;
+		var g = conway.grid;
+		var ym1x = A5($author$project$Conway$getNeighborAlive, h, w, g, y - 1, x);
+		var ym1xm1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y - 1, x - 1);
+		var ym1xp1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y - 1, x + 1);
+		var yp1x = A5($author$project$Conway$getNeighborAlive, h, w, g, y + 1, x);
+		var yp1xm1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y + 1, x - 1);
+		var yp1xp1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y + 1, x + 1);
+		var yxm1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y, x - 1);
+		var yxp1 = A5($author$project$Conway$getNeighborAlive, h, w, g, y, x + 1);
+		var neighborAliveCount = ((((((ym1xm1 + ym1x) + ym1xp1) + yxm1) + yxp1) + yp1xm1) + yp1x) + yp1xp1;
+		return alive ? (((neighborAliveCount === 2) || (neighborAliveCount === 3)) ? true : false) : ((neighborAliveCount === 3) ? true : false);
+	});
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Elm$JsArray$indexedMap = _JsArray_indexedMap;
+var $elm$core$Array$indexedMap = F2(
+	function (func, _v0) {
+		var len = _v0.a;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var initialBuilder = {
+			nodeList: _List_Nil,
+			nodeListSize: 0,
+			tail: A3(
+				$elm$core$Elm$JsArray$indexedMap,
+				func,
+				$elm$core$Array$tailIndex(len),
+				tail)
+		};
+		var helper = F2(
+			function (node, builder) {
+				if (node.$ === 'SubTree') {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, helper, builder, subTree);
+				} else {
+					var leaf = node.a;
+					var offset = builder.nodeListSize * $elm$core$Array$branchFactor;
+					var mappedLeaf = $elm$core$Array$Leaf(
+						A3($elm$core$Elm$JsArray$indexedMap, func, offset, leaf));
+					return {
+						nodeList: A2($elm$core$List$cons, mappedLeaf, builder.nodeList),
+						nodeListSize: builder.nodeListSize + 1,
+						tail: builder.tail
+					};
+				}
+			});
+		return A2(
+			$elm$core$Array$builderToArray,
+			true,
+			A3($elm$core$Elm$JsArray$foldl, helper, initialBuilder, tree));
+	});
+var $author$project$Conway$updateGrid = function (conway) {
+	return A2(
+		$elm$core$Array$indexedMap,
+		function (y) {
+			return $elm$core$Array$indexedMap(
+				A2($author$project$Conway$applyRules, conway, y));
+		},
+		conway.grid);
+};
+var $author$project$Conway$update = function (conway) {
+	return _Utils_update(
+		conway,
+		{
+			grid: $author$project$Conway$updateGrid(conway)
+		});
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		var newWidth = msg.a;
@@ -5671,6 +5836,7 @@ var $author$project$Main$update = F2(
 			_Utils_update(
 				model,
 				{
+					conway: $author$project$Conway$update(model.conway),
 					device: A2($author$project$Main$getDevice, newWidth, newHeight)
 				}),
 			$elm$core$Platform$Cmd$none);
@@ -5700,7 +5866,6 @@ var $mdgriffith$elm_ui$Internal$Flag$Flag = function (a) {
 var $mdgriffith$elm_ui$Internal$Flag$Second = function (a) {
 	return {$: 'Second', a: a};
 };
-var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
 var $mdgriffith$elm_ui$Internal$Flag$flag = function (i) {
 	return (i > 31) ? $mdgriffith$elm_ui$Internal$Flag$Second(1 << (i - 32)) : $mdgriffith$elm_ui$Internal$Flag$Flag(1 << i);
 };
@@ -9431,7 +9596,6 @@ var $elm$virtual_dom$VirtualDom$keyedNode = function (tag) {
 };
 var $elm$core$Basics$not = _Basics_not;
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $elm$core$Bitwise$and = _Bitwise_and;
 var $mdgriffith$elm_ui$Internal$Flag$present = F2(
 	function (myFlag, _v0) {
 		var fieldOne = _v0.a;
@@ -10279,7 +10443,6 @@ var $mdgriffith$elm_ui$Internal$Model$renderWidth = function (w) {
 	}
 };
 var $mdgriffith$elm_ui$Internal$Flag$borderWidth = $mdgriffith$elm_ui$Internal$Flag$flag(27);
-var $elm$core$Basics$ge = _Utils_ge;
 var $mdgriffith$elm_ui$Internal$Model$skippable = F2(
 	function (flag, style) {
 		if (_Utils_eq(flag, $mdgriffith$elm_ui$Internal$Flag$borderWidth)) {
@@ -12114,6 +12277,18 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 				_Utils_ap($mdgriffith$elm_ui$Internal$Model$rootStyle, attrs)),
 			child);
 	});
+var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
+var $mdgriffith$elm_ui$Element$createNearby = F2(
+	function (loc, element) {
+		if (element.$ === 'Empty') {
+			return $mdgriffith$elm_ui$Internal$Model$NoAttribute;
+		} else {
+			return A2($mdgriffith$elm_ui$Internal$Model$Nearby, loc, element);
+		}
+	});
+var $mdgriffith$elm_ui$Element$behindContent = function (element) {
+	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Behind, element);
+};
 var $author$project$Main$contentText = 'Howdy!\r\n\r\nI am Ryan Ellis. \r\n(Not the hockey player.) \r\n(Not the racecar driver.)\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
@@ -12129,23 +12304,77 @@ var $author$project$Main$content = A2(
 		_List_fromArray(
 			[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
 		$mdgriffith$elm_ui$Element$text($author$project$Main$contentText)));
-var $author$project$Main$middle = A2(
-	$mdgriffith$elm_ui$Element$row,
-	_List_fromArray(
-		[
-			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-			$mdgriffith$elm_ui$Element$padding(10),
-			$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
-			$mdgriffith$elm_ui$Element$mouseOver(
+var $author$project$Conway$arrArrToListList = function (conway) {
+	return A2(
+		$elm$core$List$map,
+		$elm$core$Array$toList,
+		$elm$core$Array$toList(conway.grid));
+};
+var $author$project$Conway$boolToText = function (bool) {
+	return bool ? A2(
+		$mdgriffith$elm_ui$Element$el,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey),
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+			]),
+		$mdgriffith$elm_ui$Element$text('')) : A2(
+		$mdgriffith$elm_ui$Element$el,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+			]),
+		$mdgriffith$elm_ui$Element$text(''));
+};
+var $author$project$Conway$something = function (lLBool) {
+	return A2(
+		$elm$core$List$map,
+		$mdgriffith$elm_ui$Element$row(
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
 				])),
-			$author$project$Main$backgroundFadeTransition
-		]),
-	_List_fromArray(
-		[$author$project$Main$content]));
+		A2(
+			$elm$core$List$map,
+			$elm$core$List$map($author$project$Conway$boolToText),
+			lLBool));
+};
+var $author$project$Conway$view = function (conway) {
+	return A2(
+		$mdgriffith$elm_ui$Element$column,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+			]),
+		$author$project$Conway$something(
+			$author$project$Conway$arrArrToListList(conway)));
+};
+var $author$project$Main$middle = function (model) {
+	return A2(
+		$mdgriffith$elm_ui$Element$row,
+		_List_fromArray(
+			[
+				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+				$mdgriffith$elm_ui$Element$padding(10),
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
+				$mdgriffith$elm_ui$Element$mouseOver(
+				_List_fromArray(
+					[
+						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
+					])),
+				$author$project$Main$backgroundFadeTransition,
+				$mdgriffith$elm_ui$Element$behindContent(
+				$author$project$Conway$view(model.conway))
+			]),
+		_List_fromArray(
+			[$author$project$Main$content]));
+};
 var $mdgriffith$elm_ui$Internal$Model$Monospace = {$: 'Monospace'};
 var $mdgriffith$elm_ui$Element$Font$monospace = $mdgriffith$elm_ui$Internal$Model$Monospace;
 var $author$project$Colors$textColor = $author$project$Colors$black;
@@ -12190,7 +12419,7 @@ var $author$project$Main$view = function (model) {
 			_List_fromArray(
 				[
 					$author$project$Main$header,
-					$author$project$Main$middle,
+					$author$project$Main$middle(model),
 					$author$project$Main$footer(model)
 				])));
 };
