@@ -5831,32 +5831,41 @@ var $author$project$Conway$update = function (conway) {
 };
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'Resized') {
-			var newWidth = msg.a;
-			var newHeight = msg.b;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						conway: $author$project$Conway$update(model.conway),
-						device: A2($author$project$Main$getDevice, newWidth, newHeight)
-					}),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			return (model.mouseMoveCount === 1) ? _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						conway: $author$project$Conway$update(model.conway),
-						mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
-					}),
-				$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{
-						mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
-					}),
-				$elm$core$Platform$Cmd$none);
+		switch (msg.$) {
+			case 'Resized':
+				var newWidth = msg.a;
+				var newHeight = msg.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							conway: $author$project$Conway$update(model.conway),
+							device: A2($author$project$Main$getDevice, newWidth, newHeight)
+						}),
+					$elm$core$Platform$Cmd$none);
+			case 'PossibleConwayTrigger':
+				return (model.mouseMoveCount === 1) ? _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							conway: $author$project$Conway$update(model.conway),
+							mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+						}),
+					$elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							mouseMoveCount: A2($elm$core$Basics$modBy, 10, model.mouseMoveCount + 1)
+						}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							conway: $author$project$Conway$update(model.conway)
+						}),
+					$elm$core$Platform$Cmd$none);
 		}
 	});
 var $mdgriffith$elm_ui$Internal$Model$Rgba = F4(
@@ -12295,7 +12304,8 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 				_Utils_ap($mdgriffith$elm_ui$Internal$Model$rootStyle, attrs)),
 			child);
 	});
-var $author$project$Main$ConwayTrigger = {$: 'ConwayTrigger'};
+var $author$project$Main$ImmediateConwayTrigger = {$: 'ImmediateConwayTrigger'};
+var $author$project$Main$PossibleConwayTrigger = {$: 'PossibleConwayTrigger'};
 var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
 var $mdgriffith$elm_ui$Element$createNearby = F2(
 	function (loc, element) {
@@ -12334,6 +12344,13 @@ var $elm$html$Html$Events$on = F2(
 			event,
 			$elm$virtual_dom$VirtualDom$Normal(decoder));
 	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $mdgriffith$elm_ui$Element$Events$onClick = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Attr, $elm$html$Html$Events$onClick);
 var $mdgriffith$elm_ui$Element$Events$on = F2(
 	function (event, decode) {
 		return $mdgriffith$elm_ui$Internal$Model$Attr(
@@ -12409,7 +12426,8 @@ var $author$project$Main$middle = function (model) {
 					[
 						$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$lightGrey)
 					])),
-				$mdgriffith$elm_ui$Element$Events$onMouseMove($author$project$Main$ConwayTrigger),
+				$mdgriffith$elm_ui$Element$Events$onMouseMove($author$project$Main$PossibleConwayTrigger),
+				$mdgriffith$elm_ui$Element$Events$onClick($author$project$Main$ImmediateConwayTrigger),
 				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$behindContent(
 				$author$project$Conway$view(model.conway))

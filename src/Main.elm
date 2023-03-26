@@ -27,7 +27,8 @@ main =
 
 type Msg
     = Resized Int Int
-    | ConwayTrigger
+    | PossibleConwayTrigger
+    | ImmediateConwayTrigger
 
 
 init : Flags -> ( Model, Cmd Msg )
@@ -56,7 +57,7 @@ update msg model =
             , Cmd.none
             )
 
-        ConwayTrigger ->
+        PossibleConwayTrigger ->
             if model.mouseMoveCount == 1 then
                 ( { model
                     | conway = Conway.update model.conway
@@ -71,6 +72,13 @@ update msg model =
                   }
                 , Cmd.none
                 )
+
+        ImmediateConwayTrigger ->
+            ( { model
+                | conway = Conway.update model.conway
+              }
+            , Cmd.none
+            )
 
 
 subscriptions : Model -> Sub Msg
@@ -147,7 +155,8 @@ middle model =
         , padding 10
         , Background.color white
         , mouseOver [ Background.color lightGrey ]
-        , ElEvents.onMouseMove ConwayTrigger
+        , ElEvents.onMouseMove PossibleConwayTrigger
+        , ElEvents.onClick ImmediateConwayTrigger
         , backgroundFadeTransition
         , behindContent <| Conway.view model.conway
 
