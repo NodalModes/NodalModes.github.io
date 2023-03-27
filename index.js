@@ -12694,16 +12694,14 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[$mdgriffith$elm_ui$Element$Font$monospace])),
 				$mdgriffith$elm_ui$Element$Font$color($author$project$Colors$textColor),
-				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white),
-				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill)
+				$mdgriffith$elm_ui$Element$Border$width(10),
+				$mdgriffith$elm_ui$Element$Border$color($author$project$Colors$darkGreen),
+				$mdgriffith$elm_ui$Element$Background$color($author$project$Colors$white)
 			]),
 		A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
 				[
-					$mdgriffith$elm_ui$Element$Border$width(10),
-					$mdgriffith$elm_ui$Element$Border$color($author$project$Colors$darkGreen),
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$spacing(10)

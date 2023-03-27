@@ -119,15 +119,16 @@ view model =
         }
         [ Font.family [ Font.monospace ]
         , Font.color textColor
+        , Border.width 10
+        , Border.color darkGreen
         , Background.color white
-        , width fill
-        , height fill
+
+        -- , width fill
+        -- , height fill
         ]
     <|
         column
-            [ Border.width 10
-            , Border.color darkGreen
-            , width fill
+            [ width fill
             , height fill
             , spacing 10
             ]
