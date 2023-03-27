@@ -52,7 +52,6 @@ update msg model =
         Resized newWidth newHeight ->
             ( { model
                 | device = getDevice newWidth newHeight
-                , conway = Conway.update model.conway
               }
             , Cmd.none
             )
@@ -172,11 +171,11 @@ middle model =
         , ElEvents.onClick ImmediateConwayTrigger
 
         -- , backgroundFadeTransition
-        , behindContent <| Conway.view model.conway
+        , inFront <| content
 
         -- , explain Debug.todo
         ]
-        [ content ]
+        [ Conway.view model.conway ]
 
 
 backgroundFadeTransition : Attribute msg
@@ -199,8 +198,12 @@ contentText =
     """Howdy!
 
 I am Ryan Ellis. 
+
 (Not the hockey player.) 
+
 (Not the racecar driver.)
+
+(I write code.)
 """
 
 
@@ -260,13 +263,13 @@ footer model =
         in
         case situation of
             ( Phone, _ ) ->
-                column [ width fill, spacing 10 ] footerContent
+                wrappedRow [ width fill, spacing 10 ] footerContent
 
             ( _, Landscape ) ->
                 row [ width fill, spacing 10 ] footerContent
 
             ( _, Portrait ) ->
-                column [ width fill, spacing 10 ] footerContent
+                wrappedRow [ width fill, spacing 10 ] footerContent
 
 
 linkAttributes : List (Attribute msg)

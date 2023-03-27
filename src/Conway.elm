@@ -2,8 +2,9 @@ module Conway exposing (..)
 
 import Array exposing (Array)
 import Colors exposing (..)
-import Element exposing (column, el, explain, fill, height, none, padding, paddingXY, px, row, spacing, text, width)
+import Element exposing (column, el, explain, fill, height, image, minimum, none, padding, paddingXY, px, row, scrollbars, shrink, spacing, text, width)
 import Element.Background as Background
+import Element.Border as Border
 import Html exposing (Html)
 import Maybe exposing (andThen)
 import Random
@@ -20,7 +21,7 @@ type alias Conway =
 view : Conway -> Element.Element msg
 view conway =
     column
-        [ width fill, height fill, spacing 10, paddingXY 10 0 ]
+        [ width fill, height fill, scrollbars ]
     <|
         (arrArrToListList conway |> something)
 
@@ -33,7 +34,7 @@ arrArrToListList conway =
 something : List (List Bool) -> List (Element.Element msg)
 something lLBool =
     List.map (List.map boolToText) lLBool
-        |> List.map (row [ width fill, height fill, spacing 10 ])
+        |> List.map (row [ width fill, height fill ])
 
 
 boolToText : Bool -> Element.Element msg
@@ -42,19 +43,25 @@ boolToText bool =
         el
             [ Background.color lightGreen
             , backgroundFadeTransition
-            , width fill
-            , height fill
+            , width (fill |> minimum 20)
+            , height (fill |> minimum 20)
+            , Border.color white
+            , Border.width 5
             ]
-            (text "")
+        <|
+            text ""
 
     else
         el
             [ Background.color white
             , backgroundFadeTransition
-            , width fill
-            , height fill
+            , width (fill |> minimum 20)
+            , height (fill |> minimum 20)
+            , Border.color white
+            , Border.width 5
             ]
-            (text "")
+        <|
+            text ""
 
 
 backgroundFadeTransition : Element.Attribute msg
