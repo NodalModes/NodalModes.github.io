@@ -152,7 +152,7 @@ header =
         [ el
             [ centerX
             , centerY
-            , Font.size 32
+            , Font.size 40
             , Region.heading 1
             ]
             (text "{- NodalModes -}")
@@ -188,23 +188,24 @@ content : Element msg
 content =
     el
         [ width fill
+
+        -- , height fill
         , Region.mainContent
         ]
     <|
-        el [ centerX, centerY ] (text contentText)
+        el [ centerX, centerY, Font.size 30 ] (text contentText)
 
 
 contentText : String
 contentText =
-    """Howdy!
+    """
+I am Ryan Ellis
 
-I am Ryan Ellis. 
+    (not the hockey player) 
 
-(Not the hockey player.) 
+        (not the racecar driver)
 
-(Not the racecar driver.)
-
-(I write code.)
+            (I write code).
 """
 
 
@@ -245,6 +246,7 @@ footer model =
         , mouseOver [ Background.color lightGreen ]
         , backgroundFadeTransition
         , Region.footer
+        , Font.size 20
 
         -- , padding 10
         , width fill
@@ -252,25 +254,7 @@ footer model =
         -- , explain Debug.todo
         ]
     <|
-        let
-            orientation =
-                model.device.orientation
-
-            class =
-                model.device.class
-
-            situation =
-                ( class, orientation )
-        in
-        case situation of
-            ( Phone, _ ) ->
-                wrappedRow [ width fill, spacing 10 ] footerContent
-
-            ( _, Landscape ) ->
-                row [ width fill, spacing 10 ] footerContent
-
-            ( _, Portrait ) ->
-                wrappedRow [ width fill, spacing 10 ] footerContent
+        wrappedRow [ width fill, spacing 10 ] footerContent
 
 
 linkAttributes : List (Attribute msg)

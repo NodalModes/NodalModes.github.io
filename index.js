@@ -11953,26 +11953,16 @@ var $author$project$Main$footerContent = _List_fromArray(
 			}))
 	]);
 var $author$project$Colors$lightGreen = A3($mdgriffith$elm_ui$Element$rgb, 0.75, 0.8333333333333334, 0.5833333333333334);
-var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
-var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
-var $mdgriffith$elm_ui$Element$row = F2(
-	function (attrs, children) {
-		return A4(
-			$mdgriffith$elm_ui$Internal$Model$element,
-			$mdgriffith$elm_ui$Internal$Model$asRow,
-			$mdgriffith$elm_ui$Internal$Model$div,
-			A2(
-				$elm$core$List$cons,
-				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
-				A2(
-					$elm$core$List$cons,
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
-					A2(
-						$elm$core$List$cons,
-						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
-						attrs))),
-			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
-	});
+var $mdgriffith$elm_ui$Internal$Model$FontSize = function (a) {
+	return {$: 'FontSize', a: a};
+};
+var $mdgriffith$elm_ui$Internal$Flag$fontSize = $mdgriffith$elm_ui$Internal$Flag$flag(4);
+var $mdgriffith$elm_ui$Element$Font$size = function (i) {
+	return A2(
+		$mdgriffith$elm_ui$Internal$Model$StyleClass,
+		$mdgriffith$elm_ui$Internal$Flag$fontSize,
+		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
+};
 var $mdgriffith$elm_ui$Internal$Model$SpacingStyle = F3(
 	function (a, b, c) {
 		return {$: 'SpacingStyle', a: a, b: b, c: c};
@@ -11993,6 +11983,8 @@ var $mdgriffith$elm_ui$Element$spacing = function (x) {
 			x));
 };
 var $author$project$Colors$white = A3($mdgriffith$elm_ui$Element$rgb, 1, 1, 1);
+var $mdgriffith$elm_ui$Internal$Model$AsRow = {$: 'AsRow'};
+var $mdgriffith$elm_ui$Internal$Model$asRow = $mdgriffith$elm_ui$Internal$Model$AsRow;
 var $mdgriffith$elm_ui$Internal$Model$Padding = F5(
 	function (a, b, c, d, e) {
 		return {$: 'Padding', a: a, b: b, c: c, d: d, e: e};
@@ -12194,54 +12186,17 @@ var $author$project$Main$footer = function (model) {
 					])),
 				$author$project$Main$backgroundFadeTransition,
 				$mdgriffith$elm_ui$Element$Region$footer,
+				$mdgriffith$elm_ui$Element$Font$size(20),
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
 			]),
-		function () {
-			var orientation = model.device.orientation;
-			var _class = model.device._class;
-			var situation = _Utils_Tuple2(_class, orientation);
-			_v0$0:
-			while (true) {
-				if (situation.b.$ === 'Landscape') {
-					if (situation.a.$ === 'Phone') {
-						break _v0$0;
-					} else {
-						var _v2 = situation.b;
-						return A2(
-							$mdgriffith$elm_ui$Element$row,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							$author$project$Main$footerContent);
-					}
-				} else {
-					if (situation.a.$ === 'Phone') {
-						break _v0$0;
-					} else {
-						var _v3 = situation.b;
-						return A2(
-							$mdgriffith$elm_ui$Element$wrappedRow,
-							_List_fromArray(
-								[
-									$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-									$mdgriffith$elm_ui$Element$spacing(10)
-								]),
-							$author$project$Main$footerContent);
-					}
-				}
-			}
-			var _v1 = situation.a;
-			return A2(
-				$mdgriffith$elm_ui$Element$wrappedRow,
-				_List_fromArray(
-					[
-						$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
-						$mdgriffith$elm_ui$Element$spacing(10)
-					]),
-				$author$project$Main$footerContent);
-		}());
+		A2(
+			$mdgriffith$elm_ui$Element$wrappedRow,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$spacing(10)
+				]),
+			$author$project$Main$footerContent));
 };
 var $mdgriffith$elm_ui$Internal$Model$ForceHover = {$: 'ForceHover'};
 var $mdgriffith$elm_ui$Internal$Model$HoverOption = function (a) {
@@ -12252,16 +12207,24 @@ var $mdgriffith$elm_ui$Internal$Model$Heading = function (a) {
 	return {$: 'Heading', a: a};
 };
 var $mdgriffith$elm_ui$Element$Region$heading = A2($elm$core$Basics$composeL, $mdgriffith$elm_ui$Internal$Model$Describe, $mdgriffith$elm_ui$Internal$Model$Heading);
-var $mdgriffith$elm_ui$Internal$Model$FontSize = function (a) {
-	return {$: 'FontSize', a: a};
-};
-var $mdgriffith$elm_ui$Internal$Flag$fontSize = $mdgriffith$elm_ui$Internal$Flag$flag(4);
-var $mdgriffith$elm_ui$Element$Font$size = function (i) {
-	return A2(
-		$mdgriffith$elm_ui$Internal$Model$StyleClass,
-		$mdgriffith$elm_ui$Internal$Flag$fontSize,
-		$mdgriffith$elm_ui$Internal$Model$FontSize(i));
-};
+var $mdgriffith$elm_ui$Element$row = F2(
+	function (attrs, children) {
+		return A4(
+			$mdgriffith$elm_ui$Internal$Model$element,
+			$mdgriffith$elm_ui$Internal$Model$asRow,
+			$mdgriffith$elm_ui$Internal$Model$div,
+			A2(
+				$elm$core$List$cons,
+				$mdgriffith$elm_ui$Internal$Model$htmlClass($mdgriffith$elm_ui$Internal$Style$classes.contentLeft + (' ' + $mdgriffith$elm_ui$Internal$Style$classes.contentCenterY)),
+				A2(
+					$elm$core$List$cons,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$shrink),
+					A2(
+						$elm$core$List$cons,
+						$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$shrink),
+						attrs))),
+			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
+	});
 var $author$project$Main$header = A2(
 	$mdgriffith$elm_ui$Element$row,
 	_List_fromArray(
@@ -12284,7 +12247,7 @@ var $author$project$Main$header = A2(
 				[
 					$mdgriffith$elm_ui$Element$centerX,
 					$mdgriffith$elm_ui$Element$centerY,
-					$mdgriffith$elm_ui$Element$Font$size(32),
+					$mdgriffith$elm_ui$Element$Font$size(40),
 					$mdgriffith$elm_ui$Element$Region$heading(1)
 				]),
 			$mdgriffith$elm_ui$Element$text('{- NodalModes -}'))
@@ -12497,7 +12460,7 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 	});
 var $author$project$Main$ImmediateConwayTrigger = {$: 'ImmediateConwayTrigger'};
 var $author$project$Main$PossibleConwayTrigger = {$: 'PossibleConwayTrigger'};
-var $author$project$Main$contentText = 'Howdy!\r\n\r\nI am Ryan Ellis. \r\n\r\n(Not the hockey player.) \r\n\r\n(Not the racecar driver.)\r\n\r\n(I write code.)\r\n';
+var $author$project$Main$contentText = '\r\nI am Ryan Ellis\r\n\r\n    (not the hockey player) \r\n\r\n        (not the racecar driver)\r\n\r\n            (I write code).\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
 var $author$project$Main$content = A2(
@@ -12510,7 +12473,11 @@ var $author$project$Main$content = A2(
 	A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
-			[$mdgriffith$elm_ui$Element$centerX, $mdgriffith$elm_ui$Element$centerY]),
+			[
+				$mdgriffith$elm_ui$Element$centerX,
+				$mdgriffith$elm_ui$Element$centerY,
+				$mdgriffith$elm_ui$Element$Font$size(30)
+			]),
 		$mdgriffith$elm_ui$Element$text($author$project$Main$contentText)));
 var $mdgriffith$elm_ui$Internal$Model$InFront = {$: 'InFront'};
 var $mdgriffith$elm_ui$Element$createNearby = F2(
