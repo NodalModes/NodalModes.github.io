@@ -12520,6 +12520,46 @@ var $mdgriffith$elm_ui$Element$Events$onMouseMove = function (msg) {
 		'mousemove',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $elm$core$Basics$always = F2(
+	function (a, _v0) {
+		return a;
+	});
+var $mdgriffith$elm_ui$Element$Lazy$embed = function (x) {
+	switch (x.$) {
+		case 'Unstyled':
+			var html = x.a;
+			return html;
+		case 'Styled':
+			var styled = x.a;
+			return styled.html(
+				A2(
+					$mdgriffith$elm_ui$Internal$Model$OnlyDynamic,
+					{
+						focus: {backgroundColor: $elm$core$Maybe$Nothing, borderColor: $elm$core$Maybe$Nothing, shadow: $elm$core$Maybe$Nothing},
+						hover: $mdgriffith$elm_ui$Internal$Model$AllowHover,
+						mode: $mdgriffith$elm_ui$Internal$Model$Layout
+					},
+					styled.styles));
+		case 'Text':
+			var text = x.a;
+			return $elm$core$Basics$always(
+				$elm$virtual_dom$VirtualDom$text(text));
+		default:
+			return $elm$core$Basics$always(
+				$elm$virtual_dom$VirtualDom$text(''));
+	}
+};
+var $mdgriffith$elm_ui$Element$Lazy$apply1 = F2(
+	function (fn, a) {
+		return $mdgriffith$elm_ui$Element$Lazy$embed(
+			fn(a));
+	});
+var $elm$virtual_dom$VirtualDom$lazy3 = _VirtualDom_lazy3;
+var $mdgriffith$elm_ui$Element$Lazy$lazy = F2(
+	function (fn, a) {
+		return $mdgriffith$elm_ui$Internal$Model$Unstyled(
+			A3($elm$virtual_dom$VirtualDom$lazy3, $mdgriffith$elm_ui$Element$Lazy$apply1, fn, a));
+	});
 var $author$project$Conway$arrArrToListList = function (conway) {
 	return A2(
 		$elm$core$List$map,
@@ -12601,7 +12641,7 @@ var $author$project$Conway$something = function (lLBool) {
 			$elm$core$List$map($author$project$Conway$boolToText),
 			lLBool));
 };
-var $author$project$Conway$view = function (conway) {
+var $author$project$Conway$viewConway = function (conway) {
 	return A2(
 		$mdgriffith$elm_ui$Element$column,
 		_List_fromArray(
@@ -12612,6 +12652,9 @@ var $author$project$Conway$view = function (conway) {
 			]),
 		$author$project$Conway$something(
 			$author$project$Conway$arrArrToListList(conway)));
+};
+var $author$project$Conway$view = function (conway) {
+	return A2($mdgriffith$elm_ui$Element$Lazy$lazy, $author$project$Conway$viewConway, conway);
 };
 var $author$project$Main$middle = function (model) {
 	return A2(
