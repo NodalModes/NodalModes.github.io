@@ -188,6 +188,7 @@ content : Element msg
 content =
     el
         [ width fill
+        , clip
 
         -- , height fill
         , Region.mainContent

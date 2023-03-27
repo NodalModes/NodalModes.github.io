@@ -12460,6 +12460,8 @@ var $mdgriffith$elm_ui$Element$layoutWith = F3(
 	});
 var $author$project$Main$ImmediateConwayTrigger = {$: 'ImmediateConwayTrigger'};
 var $author$project$Main$PossibleConwayTrigger = {$: 'PossibleConwayTrigger'};
+var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
+var $mdgriffith$elm_ui$Element$clip = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.clip);
 var $author$project$Main$contentText = '\r\nI am Ryan Ellis\r\n\r\n    (not the hockey player) \r\n\r\n        (not the racecar driver)\r\n\r\n            (I write code).\r\n';
 var $mdgriffith$elm_ui$Internal$Model$Main = {$: 'Main'};
 var $mdgriffith$elm_ui$Element$Region$mainContent = $mdgriffith$elm_ui$Internal$Model$Describe($mdgriffith$elm_ui$Internal$Model$Main);
@@ -12468,6 +12470,7 @@ var $author$project$Main$content = A2(
 	_List_fromArray(
 		[
 			$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
+			$mdgriffith$elm_ui$Element$clip,
 			$mdgriffith$elm_ui$Element$Region$mainContent
 		]),
 	A2(
@@ -12566,8 +12569,6 @@ var $author$project$Conway$arrArrToListList = function (conway) {
 		$elm$core$Array$toList,
 		$elm$core$Array$toList(conway.grid));
 };
-var $mdgriffith$elm_ui$Internal$Flag$overflow = $mdgriffith$elm_ui$Internal$Flag$flag(20);
-var $mdgriffith$elm_ui$Element$scrollbars = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.scrollbars);
 var $author$project$Conway$backgroundFadeTransition = $mdgriffith$elm_ui$Element$htmlAttribute(
 	$andrewMacmurray$elm_simple_animation$Simple$Transition$properties(
 		_List_fromArray(
@@ -12648,7 +12649,7 @@ var $author$project$Conway$viewConway = function (conway) {
 			[
 				$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-				$mdgriffith$elm_ui$Element$scrollbars
+				$mdgriffith$elm_ui$Element$clip
 			]),
 		$author$project$Conway$something(
 			$author$project$Conway$arrArrToListList(conway)));

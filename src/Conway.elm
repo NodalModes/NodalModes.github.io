@@ -2,7 +2,7 @@ module Conway exposing (..)
 
 import Array exposing (Array)
 import Colors exposing (..)
-import Element exposing (column, el, explain, fill, height, image, minimum, none, padding, paddingXY, px, row, scrollbars, shrink, spacing, text, width)
+import Element exposing (clip, column, el, explain, fill, height, image, minimum, none, padding, paddingXY, px, row, scrollbars, shrink, spacing, text, width)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Lazy exposing (lazy)
@@ -27,7 +27,7 @@ view conway =
 viewConway : Conway -> Element.Element msg
 viewConway conway =
     column
-        [ width fill, height fill, scrollbars ]
+        [ width fill, height fill, clip ]
     <|
         (arrArrToListList conway |> something)
 
