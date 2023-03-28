@@ -12663,7 +12663,7 @@ var $mdgriffith$elm_ui$Element$wrappedRow = F2(
 			}
 		}
 	});
-var $author$project$Main$footer = function (model) {
+var $author$project$Main$footer = function (_v0) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(

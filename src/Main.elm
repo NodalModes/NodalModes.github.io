@@ -12,10 +12,13 @@ import Element.Font as Font
 import Element.Input as Input
 import Element.Region as Region
 import Html exposing (footer, header)
-import Json.Decode as Decode
 import Random
-import Simple.Transition as Transition exposing (properties)
+import Simple.Transition as Transition
 import Task
+
+
+
+-- Main --
 
 
 main : Program Flags Model Msg
@@ -28,12 +31,8 @@ main =
         }
 
 
-type Msg
-    = Resized Int Int
-    | PossibleConwayTrigger
-    | ImmediateConwayTrigger
-    | RandomStuff (List (List Float))
-    | RestartConway
+
+-- Model --
 
 
 type alias Model =
@@ -44,26 +43,20 @@ type alias Model =
     }
 
 
+
+-- Initialization --
+
+
 type alias Flags =
     { windowWidth : Int
     , windowHeight : Int
     }
 
 
-randGen : Model -> Random.Generator (List (List Float))
-randGen model =
-    Random.list model.conway.height (Random.list model.conway.width (Random.float 0 1))
-
-
-getRand : Model -> Cmd Msg
-getRand model =
-    Random.generate RandomStuff (randGen model)
-
-
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { device = getDevice flags.windowWidth flags.windowHeight
-      , conway = Conway.init [ [] ]
+      , conway = Conway.init [ [] ] -- conway will be re-initialized with populated 2D List after RestartConway command
       , mouseMoveCount = 0
       , rands = [ [] ]
       }
@@ -79,6 +72,27 @@ run m =
 getDevice : Int -> Int -> Device
 getDevice width height =
     classifyDevice { width = width, height = height }
+
+
+
+-- Subscriptions --
+
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.batch [ Events.onResize (\width height -> Resized width height) ]
+
+
+
+-- Update --
+
+
+type Msg
+    = Resized Int Int
+    | PossibleConwayTrigger
+    | ImmediateConwayTrigger
+    | RandomStuff (List (List Float))
+    | RestartConway
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -125,11 +139,31 @@ update msg model =
             )
 
 
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.batch
-        [ Events.onResize (\width height -> Resized width height)
-        ]
+
+-- Random --
+
+
+randGen : Model -> Random.Generator (List (List Float))
+randGen model =
+    Random.list model.conway.height (Random.list model.conway.width (Random.float 0 1))
+
+
+getRand : Model -> Cmd Msg
+getRand model =
+    Random.generate RandomStuff (randGen model)
+
+
+
+-- Animation --
+
+
+backgroundFadeTransition : Attribute msg
+backgroundFadeTransition =
+    Transition.properties [ Transition.backgroundColor 1000 [] ] |> Element.htmlAttribute
+
+
+
+-- View --
 
 
 view : Model -> Html.Html Msg
@@ -154,9 +188,6 @@ view model =
         , Border.width 10
         , Border.color darkGreen
         , Background.color white
-
-        -- , width fill
-        -- , height fill
         ]
     <|
         column
@@ -170,12 +201,14 @@ view model =
             ]
 
 
+
+-- Header --
+
+
 header : Element Msg
 header =
     row
         [ width fill
-
-        -- , explain Debug.todo
         , Background.color white
         , mouseOver [ Background.color lightGreen ]
         , backgroundFadeTransition
@@ -191,6 +224,10 @@ header =
         ]
 
 
+
+-- Middle --
+
+
 middle : Model -> Element Msg
 middle model =
     row
@@ -198,22 +235,11 @@ middle model =
         , height fill
         , padding 10
         , Background.color white
-
-        -- , mouseOver [ Background.color lightGrey ]
         , ElEvents.onMouseMove PossibleConwayTrigger
         , ElEvents.onClick ImmediateConwayTrigger
-
-        -- , backgroundFadeTransition
         , inFront <| content
-
-        -- , explain Debug.todo
         ]
         [ Conway.view model.conway ]
-
-
-backgroundFadeTransition : Attribute msg
-backgroundFadeTransition =
-    Transition.properties [ Transition.backgroundColor 1000 [] ] |> Element.htmlAttribute
 
 
 content : Element msg
@@ -221,7 +247,7 @@ content =
     el
         [ centerX
         , centerY
-        , clip -- , height fill
+        , clip
         , Region.mainContent
         ]
     <|
@@ -239,6 +265,24 @@ I am Ryan Ellis
 """
 
 
+
+-- Footer --
+
+
+footer : Model -> Element Msg
+footer _ =
+    el
+        [ Background.color white
+        , mouseOver [ Background.color lightGreen ]
+        , backgroundFadeTransition
+        , Region.footer
+        , Font.size 20
+        , width fill
+        ]
+    <|
+        wrappedRow [ width fill, spacing 10 ] footerContent
+
+
 footerContent : List (Element Msg)
 footerContent =
     [ Input.button
@@ -249,7 +293,6 @@ footerContent =
         , backgroundFadeTransition
         , Region.description "Restart button for Conway's game of life. Randomizes the grid. "
         ]
-      <|
         { onPress = Just RestartConway, label = text "[Restart]" }
     , el
         [ centerX
@@ -277,24 +320,6 @@ footerContent =
             , label = text "Made in Elm"
             }
     ]
-
-
-footer : Model -> Element Msg
-footer model =
-    el
-        [ Background.color white
-        , mouseOver [ Background.color lightGreen ]
-        , backgroundFadeTransition
-        , Region.footer
-        , Font.size 20
-
-        -- , padding 10
-        , width fill
-
-        -- , explain Debug.todo
-        ]
-    <|
-        wrappedRow [ width fill, spacing 10 ] footerContent
 
 
 linkAttributes : List (Attribute msg)

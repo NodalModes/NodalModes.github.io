@@ -2,14 +2,12 @@ module Conway exposing (..)
 
 import Array exposing (Array)
 import Colors exposing (..)
-import Element exposing (clip, column, el, explain, fill, height, image, minimum, none, padding, paddingXY, px, row, scrollbars, shrink, spacing, text, width)
+import Element exposing (clip, column, el, fill, height, minimum, row, text, width)
 import Element.Background as Background
 import Element.Border as Border
 import Element.Lazy exposing (lazy)
-import Html exposing (Html)
 import Maybe exposing (andThen)
-import Random
-import Simple.Transition as Transition exposing (properties)
+import Simple.Transition as Transition
 
 
 type alias Conway =
