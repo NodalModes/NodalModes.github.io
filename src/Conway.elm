@@ -156,8 +156,8 @@ getNeighborAlive h w g y x =
             0
 
 
-init : () -> Conway
-init _ =
+init : List (List Float) -> Conway
+init l =
     let
         w =
             32
@@ -167,19 +167,33 @@ init _ =
     in
     { width = w
     , height = h
-    , grid = initializeGrid h w
+    , grid = initializeGrid h w l
     }
 
 
-initializeGrid : Int -> Int -> Array (Array Bool)
-initializeGrid width height =
-    Array.initialize width (\bbb -> Array.initialize height (getBoolFromIndex bbb))
+initializeGrid : Int -> Int -> List (List Float) -> Array (Array Bool)
+initializeGrid width height lLF =
+    Array.initialize width (\yIndex -> Array.initialize height (getBoolFromIndex lLF yIndex))
 
 
-getBoolFromIndex : Int -> Int -> Bool
-getBoolFromIndex bbb index =
-    if index >= bbb - 3 && index <= bbb + 3 then
-        True
+getBoolFromIndex : List (List Float) -> Int -> Int -> Bool
+getBoolFromIndex list2D yIndex xIndex =
+    let
+        al : Array (List Float)
+        al =
+            Array.fromList list2D
 
-    else
-        False
+        aa : Array (Array Float)
+        aa =
+            Array.map Array.fromList al
+
+        f : Maybe Float
+        f =
+            Array.get yIndex aa |> Maybe.andThen (Array.get xIndex)
+    in
+    case f of
+        Just value ->
+            value > ((toFloat xIndex / toFloat 32) + (1 - (toFloat yIndex / toFloat 18))) * 2
+
+        Nothing ->
+            False

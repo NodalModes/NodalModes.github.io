@@ -9,10 +9,13 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Events as ElEvents
 import Element.Font as Font
+import Element.Input as Input
 import Element.Region as Region
 import Html exposing (footer, header)
 import Json.Decode as Decode
+import Random
 import Simple.Transition as Transition exposing (properties)
+import Task
 
 
 main : Program Flags Model Msg
@@ -29,16 +32,48 @@ type Msg
     = Resized Int Int
     | PossibleConwayTrigger
     | ImmediateConwayTrigger
+    | RandomStuff (List (List Float))
+    | RestartConway
+
+
+type alias Model =
+    { device : Device
+    , conway : Conway.Conway
+    , mouseMoveCount : Int
+    , rands : List (List Float)
+    }
+
+
+type alias Flags =
+    { windowWidth : Int
+    , windowHeight : Int
+    }
+
+
+randGen : Model -> Random.Generator (List (List Float))
+randGen model =
+    Random.list model.conway.height (Random.list model.conway.width (Random.float 0 1))
+
+
+getRand : Model -> Cmd Msg
+getRand model =
+    Random.generate RandomStuff (randGen model)
 
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
     ( { device = getDevice flags.windowWidth flags.windowHeight
-      , conway = Conway.init ()
+      , conway = Conway.init [ [] ]
       , mouseMoveCount = 0
+      , rands = [ [] ]
       }
-    , Cmd.none
+    , run RestartConway
     )
+
+
+run : msg -> Cmd msg
+run m =
+    Task.perform (always m) (Task.succeed ())
 
 
 getDevice : Int -> Int -> Device
@@ -49,6 +84,16 @@ getDevice width height =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        RestartConway ->
+            ( model, getRand model )
+
+        RandomStuff stuff ->
+            ( { model
+                | conway = Conway.init stuff
+              }
+            , Cmd.none
+            )
+
         Resized newWidth newHeight ->
             ( { model
                 | device = getDevice newWidth newHeight
@@ -85,19 +130,6 @@ subscriptions _ =
     Sub.batch
         [ Events.onResize (\width height -> Resized width height)
         ]
-
-
-type alias Model =
-    { device : Device
-    , conway : Conway.Conway
-    , mouseMoveCount : Int
-    }
-
-
-type alias Flags =
-    { windowWidth : Int
-    , windowHeight : Int
-    }
 
 
 view : Model -> Html.Html Msg
@@ -138,11 +170,10 @@ view model =
             ]
 
 
-header : Element msg
+header : Element Msg
 header =
     row
         [ width fill
-        , padding 10
 
         -- , explain Debug.todo
         , Background.color white
@@ -152,6 +183,7 @@ header =
         [ el
             [ centerX
             , centerY
+            , padding 10
             , Font.size 40
             , Region.heading 1
             ]
@@ -187,10 +219,9 @@ backgroundFadeTransition =
 content : Element msg
 content =
     el
-        [ width fill
-        , clip
-
-        -- , height fill
+        [ centerX
+        , centerY
+        , clip -- , height fill
         , Region.mainContent
         ]
     <|
@@ -204,15 +235,23 @@ I am Ryan Ellis
 
     (not the hockey player) 
 
-        (not the racecar driver)
-
-            (I write code).
+        (or the racecar driver)
 """
 
 
-footerContent : List (Element msg)
+footerContent : List (Element Msg)
 footerContent =
-    [ el
+    [ Input.button
+        [ height fill
+        , padding 10
+        , Background.color transWhite
+        , mouseOver [ Background.color green ]
+        , backgroundFadeTransition
+        , Region.description "Restart button for Conway's game of life. Randomizes the grid. "
+        ]
+      <|
+        { onPress = Just RestartConway, label = text "[Restart]" }
+    , el
         [ centerX
         , centerY
         , padding 10
@@ -240,7 +279,7 @@ footerContent =
     ]
 
 
-footer : Model -> Element msg
+footer : Model -> Element Msg
 footer model =
     el
         [ Background.color white
