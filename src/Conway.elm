@@ -10,11 +10,66 @@ import Maybe exposing (andThen)
 import Simple.Transition as Transition
 
 
+
+-- Conway as Model --
+
+
 type alias Conway =
     { width : Int
     , height : Int
     , grid : Array (Array Bool)
     }
+
+
+
+-- Initialization --
+
+
+init : List (List Float) -> Conway
+init l =
+    let
+        w =
+            32
+
+        h =
+            18
+    in
+    { width = w
+    , height = h
+    , grid = initializeGrid h w l
+    }
+
+
+initializeGrid : Int -> Int -> List (List Float) -> Array (Array Bool)
+initializeGrid height width list2D =
+    Array.initialize height (\yIndex -> Array.initialize width <| getBoolFromIndex height width list2D yIndex)
+
+
+getBoolFromIndex : Int -> Int -> List (List Float) -> Int -> Int -> Bool
+getBoolFromIndex height width list2D yIndex xIndex =
+    let
+        arr2D : Array (Array Float)
+        arr2D =
+            Array.map Array.fromList (Array.fromList list2D)
+
+        f : Maybe Float
+        f =
+            Array.get yIndex arr2D |> Maybe.andThen (Array.get xIndex)
+    in
+    case f of
+        Just value ->
+            if width /= 0 && height /= 0 then
+                value > ((toFloat xIndex / toFloat width) + (1 - (toFloat yIndex / toFloat height))) * 2
+
+            else
+                False
+
+        Nothing ->
+            False
+
+
+
+-- View --
 
 
 view : Conway -> Element.Element msg
@@ -24,19 +79,16 @@ view conway =
 
 viewConway : Conway -> Element.Element msg
 viewConway conway =
-    column
-        [ width fill, height fill, clip ]
-    <|
-        (arrArrToListList conway |> something)
+    column [ width fill, height fill, clip ] (arrArrToListList conway.grid |> viewRow)
 
 
-arrArrToListList : Conway -> List (List Bool)
-arrArrToListList conway =
-    List.map Array.toList (Array.toList conway.grid)
+arrArrToListList : Array (Array Bool) -> List (List Bool)
+arrArrToListList grid =
+    List.map Array.toList (Array.toList grid)
 
 
-something : List (List Bool) -> List (Element.Element msg)
-something lLBool =
+viewRow : List (List Bool) -> List (Element.Element msg)
+viewRow lLBool =
     List.map (List.map boolToText) lLBool
         |> List.map (row [ width fill, height fill ])
 
@@ -68,9 +120,17 @@ boolToText bool =
             text ""
 
 
+
+-- Animation --
+
+
 backgroundFadeTransition : Element.Attribute msg
 backgroundFadeTransition =
     Transition.properties [ Transition.backgroundColor 500 [] ] |> Element.htmlAttribute
+
+
+
+-- Update --
 
 
 update : Conway -> Conway
@@ -81,10 +141,6 @@ update conway =
 updateGrid : Conway -> Array (Array Bool)
 updateGrid conway =
     Array.indexedMap (\y -> Array.indexedMap (applyRules conway y)) conway.grid
-
-
-
--- applyRules needs actual conway rules
 
 
 applyRules : Conway -> Int -> Int -> Bool -> Bool
@@ -142,7 +198,7 @@ applyRules conway y x alive =
 
 getNeighborAlive : Int -> Int -> Array (Array Bool) -> Int -> Int -> Int
 getNeighborAlive h w g y x =
-    case Array.get (modBy h y) g |> andThen (Array.get (modBy w x)) of
+    case Array.get (modBy h y) g |> andThen (Array.get <| modBy w x) of
         Just b ->
             if b then
                 1
@@ -152,46 +208,3 @@ getNeighborAlive h w g y x =
 
         Nothing ->
             0
-
-
-init : List (List Float) -> Conway
-init l =
-    let
-        w =
-            32
-
-        h =
-            18
-    in
-    { width = w
-    , height = h
-    , grid = initializeGrid h w l
-    }
-
-
-initializeGrid : Int -> Int -> List (List Float) -> Array (Array Bool)
-initializeGrid width height lLF =
-    Array.initialize width (\yIndex -> Array.initialize height (getBoolFromIndex lLF yIndex))
-
-
-getBoolFromIndex : List (List Float) -> Int -> Int -> Bool
-getBoolFromIndex list2D yIndex xIndex =
-    let
-        al : Array (List Float)
-        al =
-            Array.fromList list2D
-
-        aa : Array (Array Float)
-        aa =
-            Array.map Array.fromList al
-
-        f : Maybe Float
-        f =
-            Array.get yIndex aa |> Maybe.andThen (Array.get xIndex)
-    in
-    case f of
-        Just value ->
-            value > ((toFloat xIndex / toFloat 32) + (1 - (toFloat yIndex / toFloat 18))) * 2
-
-        Nothing ->
-            False

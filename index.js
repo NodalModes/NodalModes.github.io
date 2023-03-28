@@ -5381,31 +5381,34 @@ var $elm$core$Array$map = F2(
 			A2($elm$core$Elm$JsArray$map, helper, tree),
 			A2($elm$core$Elm$JsArray$map, func, tail));
 	});
-var $author$project$Conway$getBoolFromIndex = F3(
-	function (list2D, yIndex, xIndex) {
-		var al = $elm$core$Array$fromList(list2D);
-		var aa = A2($elm$core$Array$map, $elm$core$Array$fromList, al);
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $author$project$Conway$getBoolFromIndex = F5(
+	function (height, width, list2D, yIndex, xIndex) {
+		var arr2D = A2(
+			$elm$core$Array$map,
+			$elm$core$Array$fromList,
+			$elm$core$Array$fromList(list2D));
 		var f = A2(
 			$elm$core$Maybe$andThen,
 			$elm$core$Array$get(xIndex),
-			A2($elm$core$Array$get, yIndex, aa));
+			A2($elm$core$Array$get, yIndex, arr2D));
 		if (f.$ === 'Just') {
 			var value = f.a;
-			return _Utils_cmp(value, ((xIndex / 32) + (1 - (yIndex / 18))) * 2) > 0;
+			return ((!(!width)) && (!(!height))) ? (_Utils_cmp(value, ((xIndex / width) + (1 - (yIndex / height))) * 2) > 0) : false;
 		} else {
 			return false;
 		}
 	});
 var $author$project$Conway$initializeGrid = F3(
-	function (width, height, lLF) {
+	function (height, width, list2D) {
 		return A2(
 			$elm$core$Array$initialize,
-			width,
+			height,
 			function (yIndex) {
 				return A2(
 					$elm$core$Array$initialize,
-					height,
-					A2($author$project$Conway$getBoolFromIndex, lLF, yIndex));
+					width,
+					A4($author$project$Conway$getBoolFromIndex, height, width, list2D, yIndex));
 			});
 	});
 var $author$project$Conway$init = function (l) {
@@ -9649,7 +9652,6 @@ var $elm$core$List$minimum = function (list) {
 		return $elm$core$Maybe$Nothing;
 	}
 };
-var $elm$core$Basics$neq = _Utils_notEqual;
 var $mdgriffith$elm_ui$Internal$Model$convertAdjustment = function (adjustment) {
 	var lines = _List_fromArray(
 		[adjustment.capital, adjustment.baseline, adjustment.descender, adjustment.lowercase]);
@@ -13027,11 +13029,11 @@ var $mdgriffith$elm_ui$Element$Lazy$lazy = F2(
 		return $mdgriffith$elm_ui$Internal$Model$Unstyled(
 			A3($elm$virtual_dom$VirtualDom$lazy3, $mdgriffith$elm_ui$Element$Lazy$apply1, fn, a));
 	});
-var $author$project$Conway$arrArrToListList = function (conway) {
+var $author$project$Conway$arrArrToListList = function (grid) {
 	return A2(
 		$elm$core$List$map,
 		$elm$core$Array$toList,
-		$elm$core$Array$toList(conway.grid));
+		$elm$core$Array$toList(grid));
 };
 var $author$project$Conway$backgroundFadeTransition = $mdgriffith$elm_ui$Element$htmlAttribute(
 	$andrewMacmurray$elm_simple_animation$Simple$Transition$properties(
@@ -13092,7 +13094,7 @@ var $author$project$Conway$boolToText = function (bool) {
 			]),
 		$mdgriffith$elm_ui$Element$text(''));
 };
-var $author$project$Conway$something = function (lLBool) {
+var $author$project$Conway$viewRow = function (lLBool) {
 	return A2(
 		$elm$core$List$map,
 		$mdgriffith$elm_ui$Element$row(
@@ -13115,8 +13117,8 @@ var $author$project$Conway$viewConway = function (conway) {
 				$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 				$mdgriffith$elm_ui$Element$clip
 			]),
-		$author$project$Conway$something(
-			$author$project$Conway$arrArrToListList(conway)));
+		$author$project$Conway$viewRow(
+			$author$project$Conway$arrArrToListList(conway.grid)));
 };
 var $author$project$Conway$view = function (conway) {
 	return A2($mdgriffith$elm_ui$Element$Lazy$lazy, $author$project$Conway$viewConway, conway);
